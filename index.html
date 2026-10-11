@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Austin's 1st Birthday!</title>
+    <!-- Dito natin inilink ang CSS file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- PAGE 1: NINONG/NINANG PROPOSAL -->
+    <div id="proposalPage" class="card-container active">
+        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/84/Jollibee_2011_logo.svg/1200px-Jollibee_2011_logo.svg.png" alt="Jollibee Logo" class="jollibee-img">
+        
+        <h1>Hello I am Austin!</h1>
+        <p>As I am turning one I wanted to ask you...</p>
+        <h2>Will you be my<br>Ninong/Ninang?</h2>
+        
+        <button onclick="showInvitation()" class="btn-yes">Yes!</button>
+    </div>
+
+    <!-- PAGE 2: MAIN INVITATION PLACEHOLDER -->
+    <div id="invitationPage" class="card-container hidden">
+        <h1>Yay! Thank you!</h1>
+        <p>Ito ang main invitation part. Mamaya na natin hihimayin at idedesign ang mga detalye dito!</p>
+        <p><i>(More details to follow...)</i></p>
+    </div>
+
+    <script>
+        // JavaScript para ilipat ang view mula Page 1 papuntang Page 2
+        function showInvitation() {
+            document.getElementById('proposalPage').classList.remove('active');
+            document.getElementById('proposalPage').classList.add('hidden');
+            
+            document.getElementById('invitationPage').classList.remove('hidden');
+            document.getElementById('invitationPage').classList.add('active');
+        }
+    </script>
+
+</body>
+</html>
