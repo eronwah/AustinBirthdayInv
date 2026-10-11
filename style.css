@@ -26,9 +26,9 @@ body {
     border: 6px solid #F9A72B; /* Jollibee Yellow */
     border-radius: 25px;
     
-    /* Inayos ang padding at margin para sa overlapping image */
-    padding: 70px 25px 40px; /* Nilakihan ang top padding (70px) para hindi matakpan ang text ng image */
-    margin-top: 60px; /* Naglagay ng space sa taas para hindi maputol ang ulo ng image sa screen */
+    /* Dinagdagan ang top padding mula sa 70px papuntang 110px para may sapat na espasyo sa pinalaking image */
+    padding: 110px 25px 40px; 
+    margin-top: 100px; /* Dinagdagan ang margin-top para may sapat na espasyo ang mas malaking image sa screen */
     
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     position: relative;
@@ -49,14 +49,14 @@ p {
     font-weight: 600;
 }
 
-/* Overlapping Image Styling */
+/* Updated Overlapping Image Styling */
 .jollibee-img {
-    width: 120px;
+    width: 190px; /* Pinalaki mula sa 120px */
     height: auto;
-    position: absolute; /* Para makalabas sa box */
-    top: -60px; /* Kalahati ng height (approx 120px) para saktong nasa gitna ng border */
-    left: 50%; /* I-center sa box */
-    transform: translateX(-50%); /* I-center nang eksakto */
+    position: absolute;
+    top: -95px; /* Dinikit pababa, kalahati ng bagong height para saktong natural na nakadikit sa card */
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 /* Button Styling */
