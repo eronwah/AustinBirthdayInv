@@ -116,3 +116,269 @@ p {
     0% { opacity: 0; transform: scale(0.8); }
     100% { opacity: 1; transform: scale(1); }
 }
+
+/* =========================================
+   PAGE 2: Invitation details
+   ========================================= */
+#invitationPage {
+    overflow: hidden; /* para hindi lumabas ang balloons sa gilid ng card */
+}
+
+#invitationPage > *:not(.balloons) {
+    position: relative;
+    z-index: 1;
+}
+
+.lead {
+    margin-bottom: 15px;
+}
+
+/* Bouncing "1" badge */
+.age-badge {
+    width: 130px;
+    height: 130px;
+    margin: 0 auto 15px;
+    background: #E51B24;
+    border: 6px solid #F9A72B;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    cursor: pointer;
+    box-shadow: 0 8px 18px rgba(229, 27, 36, 0.35);
+    animation: bounce 1.6s ease-in-out infinite;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.age-badge:active {
+    transform: scale(0.92);
+}
+
+.age-num {
+    font-family: 'Fredoka One', cursive;
+    font-size: 4rem;
+    line-height: 1;
+}
+
+.age-txt {
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.celebrant {
+    font-size: 1.7rem;
+    margin-bottom: 8px;
+}
+
+.date-line {
+    font-size: 1.25rem;
+    color: #E51B24;
+    margin-bottom: 18px;
+}
+
+/* Countdown */
+.countdown {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 22px;
+}
+
+.countdown div {
+    flex: 1;
+    max-width: 78px;
+    background: #FFF4D6;
+    border: 3px solid #F9A72B;
+    border-radius: 14px;
+    padding: 8px 0;
+}
+
+.countdown b {
+    display: block;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.6rem;
+    color: #E51B24;
+    line-height: 1.1;
+}
+
+.countdown small {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #333333;
+}
+
+.countdown .cd-done {
+    max-width: none;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.4rem;
+    color: #E51B24;
+    padding: 14px;
+}
+
+/* Tap-to-open cards */
+.detail {
+    background: #FFF4D6;
+    border: 3px solid #F9A72B;
+    border-radius: 18px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    text-align: left;
+}
+
+.detail-head {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.d-icon {
+    font-size: 1.9rem;
+}
+
+.d-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.d-text strong {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.2rem;
+    color: #E51B24;
+    font-weight: normal;
+}
+
+.d-text em {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #333333;
+}
+
+.d-arrow {
+    color: #E51B24;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.detail.open .d-arrow {
+    transform: rotate(180deg);
+}
+
+.detail-body {
+    max-height: 0;
+    padding: 0 14px;
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.35s ease;
+}
+
+.detail.open .detail-body {
+    max-height: 180px;
+    padding: 0 14px 14px;
+}
+
+.detail-body p {
+    font-size: 1.05rem;
+    margin-bottom: 10px;
+}
+
+.btn-map {
+    display: inline-block;
+    background: #E51B24;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 50px;
+}
+
+/* Action buttons */
+.btn-cal {
+    width: 100%;
+    font-size: 1.2rem;
+    padding: 14px 20px;
+    margin-top: 6px;
+}
+
+.btn-confetti {
+    width: 100%;
+    margin-top: 12px;
+    background: none;
+    border: 3px dashed #E51B24;
+    color: #E51B24;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    padding: 10px;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.btn-confetti:active {
+    transform: scale(0.96);
+}
+
+/* Floating balloons (background) */
+.balloons {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.balloon {
+    position: absolute;
+    bottom: -60px;
+    width: 34px;
+    height: 44px;
+    border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+    opacity: 0.35;
+    animation: floatUp 9s linear infinite;
+}
+
+.b1 { left: 8%;  background: #E51B24; animation-delay: 0s; }
+.b2 { left: 80%; background: #F9A72B; animation-delay: 3s; }
+.b3 { left: 45%; background: #E51B24; animation-delay: 6s; }
+
+@keyframes floatUp {
+    0%   { transform: translateY(0); }
+    100% { transform: translateY(-110vh); }
+}
+
+/* Confetti pieces (nasa body kaya fixed) */
+.confetti {
+    position: fixed;
+    top: -40px;
+    z-index: 999;
+    pointer-events: none;
+    animation: confettiFall linear forwards;
+}
+
+.confetti-dot {
+    width: 10px;
+    height: 14px;
+    border-radius: 2px;
+}
+
+@keyframes confettiFall {
+    0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(540deg); opacity: 0.9; }
+}
+
+/* Respect "reduce motion" settings */
+@media (prefers-reduced-motion: reduce) {
+    .age-badge, .balloon { animation: none; }
+}
