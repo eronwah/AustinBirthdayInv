@@ -1,0 +1,13 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Austin 1st Birthday//EN
+BEGIN:VEVENT
+UID:austin-1st-birthday-2026@invite
+DTSTAMP:20261011T000000Z
+DTSTART:20261114T023000Z
+DTEND:20261114T080000Z
+SUMMARY:Austin's 1st Birthday
+LOCATION:Church: Saint John Nepomucene Parochial School | Party: Jollibee Cabiao
+DESCRIPTION:Church 10:30 AM - Saint John Nepomucene Parochial School. Party 1:00 PM - Jollibee Cabiao.
+END:VEVENT
+END:VCALENDAR
