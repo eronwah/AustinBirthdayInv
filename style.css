@@ -2,6 +2,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@600;700&display=swap');
 
 /* Reset at Base Styles */
+/* Sukat ng image: sumusunod sa lapad ng screen */
+:root {
+    --img-w: min(280px, 72vw);
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -14,7 +19,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: 100vh; /* fallback */
+    min-height: 100dvh; /* tama sa mobile address bar */
     text-align: center;
     padding: 20px;
 }
@@ -27,9 +33,9 @@ body {
     border: 6px solid #F9A72B; /* Jollibee Yellow */
     border-radius: 25px;
     
-    /* Binago: Nilakihan ang padding-top (140px) at margin-top (140px) para mag-fit ang mas malaking image at mapalapit sa text */
-    padding: 140px 25px 40px; 
-    margin-top: 140px; 
+    /* Ang padding-top at margin-top ay nakabase na sa laki ng image (--img-w) */
+    padding: calc(var(--img-w) * 0.5) 25px 40px;
+    margin-top: calc(var(--img-w) * 0.5);
     
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     position: relative;
@@ -52,10 +58,11 @@ p {
 
 /* Updated Overlapping Image Styling */
 .jollibee-img {
-    width: 280px; /* Binago: Mas pinalaki pa nang husto ang image */
+    width: var(--img-w);
+    max-width: 100%;
     height: auto;
     position: absolute;
-    top: -120px; /* Binago: Ibinaba para mas dumikit sa "Hello I am Austin" text */
+    top: calc(var(--img-w) * -0.43); /* dating -120px sa 280px */
     left: 50%;
     transform: translateX(-50%);
 }
@@ -74,8 +81,24 @@ p {
     transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
+.btn-yes:hover {
+    background-color: #ffb84d;
+}
+
+.btn-yes:focus-visible {
+    outline: 3px solid #E51B24;
+    outline-offset: 3px;
+}
+
 .btn-yes:active {
     transform: scale(0.95);
+}
+
+/* Card na walang overlapping image (Page 2, o kapag hindi nag-load ang image) */
+.card-plain,
+.no-image {
+    padding-top: 40px;
+    margin-top: 0;
 }
 
 /* Page Toggle Classes */

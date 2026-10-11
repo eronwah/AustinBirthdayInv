@@ -11,23 +11,31 @@
     <!-- PAGE 1: NINONG/NINANG PROPOSAL -->
     <div id="proposalPage" class="card-container active">
         <!-- Placeholder image na naka-link sa assets folder sa github mo -->
-        <img src="assets/main-image.png" alt="Austin" class="jollibee-img">
+        <img src="assets/main-image.png" alt="Austin" class="jollibee-img" id="mainImg">
         
         <h1>Hello I am Austin!</h1>
         <p>As I am turning one I wanted to ask you...</p>
         <h2>Will you be my<br>Ninong/Ninang?</h2>
         
-        <button onclick="showInvitation()" class="btn-yes">Yes!</button>
+        <button id="yesBtn" class="btn-yes">Yes!</button>
     </div>
 
     <!-- PAGE 2: MAIN INVITATION PLACEHOLDER -->
-    <div id="invitationPage" class="card-container hidden">
+    <div id="invitationPage" class="card-container card-plain hidden">
         <h1>Yay! Thank you!</h1>
         <p>Ito ang main invitation part. Mamaya na natin hihimayin at idedesign ang mga detalye dito!</p>
         <p><i>(More details to follow...)</i></p>
     </div>
 
     <script>
+        // Kung hindi ma-load ang image, tanggalin ito at alisin ang malaking puwang sa itaas
+        document.getElementById('mainImg').addEventListener('error', function () {
+            this.style.display = 'none';
+            document.getElementById('proposalPage').classList.add('no-image');
+        });
+
+        document.getElementById('yesBtn').addEventListener('click', showInvitation);
+
         function showInvitation() {
             document.getElementById('proposalPage').classList.remove('active');
             document.getElementById('proposalPage').classList.add('hidden');
