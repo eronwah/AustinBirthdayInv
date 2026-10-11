@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Austin's 1st Birthday!</title>
+
+    <!-- Link preview (Messenger/Facebook). PALITAN ang SITE-URL ng totoong link ng site mo (dapat nagsisimula sa https://) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="You're Invited! Austin's 1st Birthday">
+    <meta property="og:description" content="Tap to open your special invitation.">
+    <meta property="og:image" content="https://SITE-URL/assets/preview.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Envelope invitation for Austin's 1st Birthday">
+    <meta property="og:url" content="https://SITE-URL/">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -31,9 +41,9 @@
         <h1>Yay! Thank you!</h1>
         <p class="lead">You are invited to celebrate</p>
 
-        <div class="hero" id="hero">
+        <div class="hero has-photo" id="hero">
             <div class="photo-frame">
-                <img src="assets/austin-photo.jpg" alt="Austin" id="celebPhoto" decoding="async">
+                <img src="assets/austin-photo.jpg?v=2" alt="Austin" id="celebPhoto" decoding="async">
             </div>
             <div class="age-badge" id="ageBadge" role="button" tabindex="0" aria-label="Tap for confetti">
                 <span class="age-num">1</span>
@@ -80,20 +90,8 @@
             </div>
         </div>
 
-        <button id="calBtn" class="btn-yes btn-cal">&#128197; Add to Calendar</button>
+        <a id="calBtn" class="btn-yes btn-cal" target="_blank" rel="noopener">&#128197; Add to Google Calendar</a>
         <button id="confettiBtn" class="btn-confetti">&#127881; Tap for confetti!</button>
-    </div>
-
-    <!-- Calendar chooser (nasa labas ng card para tama ang position) -->
-    <div id="calSheet" class="cal-sheet hidden" role="dialog" aria-label="Add to calendar">
-        <div class="cal-box">
-            <h2>Add to your calendar</h2>
-            <a id="calGoogle" class="cal-opt" target="_blank" rel="noopener">Google Calendar</a>
-            <a id="calApple" class="cal-opt">Apple Calendar (iPhone)</a>
-            <a id="calOutlook" class="cal-opt" target="_blank" rel="noopener">Outlook</a>
-            <button id="calClose" class="cal-close">Close</button>
-            <small>If nothing opens, tap the &#8943; menu in Messenger and choose "Open in browser".</small>
-        </div>
     </div>
 
     <script>
@@ -173,43 +171,17 @@
         badge.addEventListener('click', () => confettiBurst(25));
         badge.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') confettiBurst(25); });
 
-        // Photo: ipakita lang kung may nag-load na image
-        (function () {
-            const photo = document.getElementById('celebPhoto');
-            const hero = document.getElementById('hero');
-            function ok() { hero.classList.add('has-photo'); }
-            photo.addEventListener('load', ok);
-            if (photo.complete && photo.naturalWidth > 0) ok();
-        })();
+        // Photo: itatago lang kung hindi ma-load ang image
+        document.getElementById('celebPhoto').addEventListener('error', function () {
+            document.getElementById('hero').classList.remove('has-photo');
+        });
 
-        // Add to Calendar
-        (function () {
-            const title = "Austin's 1st Birthday";
-            const location = 'Church: Saint John Nepomucene Parochial School | Party: Jollibee Cabiao';
-            const details = 'Church 10:30 AM - Saint John Nepomucene Parochial School. Party 1:00 PM - Jollibee Cabiao.';
-            // 10:30 AM - 4:00 PM (Philippine time, UTC+8)
-            const googleUrl = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
-                + '&text=' + encodeURIComponent(title)
-                + '&dates=20261114T103000/20261114T160000&ctz=Asia/Manila'
-                + '&location=' + encodeURIComponent(location)
-                + '&details=' + encodeURIComponent(details);
-            const outlookUrl = 'https://outlook.live.com/calendar/0/deeplink/compose?path=%2Fcalendar%2Faction%2Fcompose&rru=addevent'
-                + '&subject=' + encodeURIComponent(title)
-                + '&startdt=' + encodeURIComponent('2026-11-14T10:30:00+08:00')
-                + '&enddt=' + encodeURIComponent('2026-11-14T16:00:00+08:00')
-                + '&location=' + encodeURIComponent(location)
-                + '&body=' + encodeURIComponent(details);
-            document.getElementById('calGoogle').href = googleUrl;
-            document.getElementById('calOutlook').href = outlookUrl;
-            document.getElementById('calApple').href = 'assets/austin-birthday.ics';
-
-            const sheet = document.getElementById('calSheet');
-            document.getElementById('calBtn').addEventListener('click', function () {
-                sheet.classList.remove('hidden');
-            });
-            document.getElementById('calClose').addEventListener('click', () => sheet.classList.add('hidden'));
-            sheet.addEventListener('click', (e) => { if (e.target === sheet) sheet.classList.add('hidden'); });
-        })();
+        // Add to Google Calendar (10:30 AM - 4:00 PM, Philippine time)
+        document.getElementById('calBtn').href = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+            + '&text=' + encodeURIComponent("Austin's 1st Birthday")
+            + '&dates=20261114T103000/20261114T160000&ctz=Asia/Manila'
+            + '&location=' + encodeURIComponent('Church: Saint John Nepomucene Parochial School | Party: Jollibee Cabiao')
+            + '&details=' + encodeURIComponent('Church 10:30 AM - Saint John Nepomucene Parochial School. Party 1:00 PM - Jollibee Cabiao.');
 
         function showInvitation() {
             setTimeout(() => confettiBurst(50), 300);
