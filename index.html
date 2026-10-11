@@ -33,7 +33,7 @@
 
         <div class="hero" id="hero">
             <div class="photo-frame">
-                <img src="assets/austin-photo.png" alt="Austin" id="celebPhoto">
+                <img src="assets/austin-photo.jpg" alt="Austin" id="celebPhoto" decoding="async">
             </div>
             <div class="age-badge" id="ageBadge" role="button" tabindex="0" aria-label="Tap for confetti">
                 <span class="age-num">1</span>
@@ -199,26 +199,13 @@
                 + '&enddt=' + encodeURIComponent('2026-11-14T16:00:00+08:00')
                 + '&location=' + encodeURIComponent(location)
                 + '&body=' + encodeURIComponent(details);
-            const ics = [
-                'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Austin 1st Birthday//EN',
-                'BEGIN:VEVENT', 'UID:austin-1st-birthday-2026@invite', 'DTSTAMP:20261011T000000Z',
-                'DTSTART:20261114T023000Z', 'DTEND:20261114T080000Z',
-                'SUMMARY:' + title, 'LOCATION:' + location, 'DESCRIPTION:' + details,
-                'END:VEVENT', 'END:VCALENDAR'
-            ].join('\r\n');
-
             document.getElementById('calGoogle').href = googleUrl;
             document.getElementById('calOutlook').href = outlookUrl;
-            document.getElementById('calApple').href = 'data:text/calendar;charset=utf8,' + encodeURIComponent(ics);
+            document.getElementById('calApple').href = 'assets/austin-birthday.ics';
 
             const sheet = document.getElementById('calSheet');
             document.getElementById('calBtn').addEventListener('click', function () {
-                // Android: diretso na sa Google Calendar
-                if (/android/i.test(navigator.userAgent)) {
-                    if (!window.open(googleUrl, '_blank')) { window.location.href = googleUrl; }
-                } else {
-                    sheet.classList.remove('hidden');
-                }
+                sheet.classList.remove('hidden');
             });
             document.getElementById('calClose').addEventListener('click', () => sheet.classList.add('hidden'));
             sheet.addEventListener('click', (e) => { if (e.target === sheet) sheet.classList.add('hidden'); });

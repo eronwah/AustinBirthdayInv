@@ -467,7 +467,8 @@ p {
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover;          /* kahit anong sukat ng larawan, pupunuin ang bilog nang hindi nababanat */
+    object-position: center 30%; /* nakatutok nang kaunti sa itaas kung nasaan ang mukha */
 }
 
 /* Ang "1" badge ay nagiging sticker sa gilid ng larawan */
