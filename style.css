@@ -1,3 +1,4 @@
+/* Import ng masayang fonts mula sa Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@600;700&display=swap');
 
 /* Reset at Base Styles */
@@ -26,9 +27,9 @@ body {
     border: 6px solid #F9A72B; /* Jollibee Yellow */
     border-radius: 25px;
     
-    /* Dinagdagan ang top padding mula sa 70px papuntang 110px para may sapat na espasyo sa pinalaking image */
-    padding: 110px 25px 40px; 
-    margin-top: 100px; /* Dinagdagan ang margin-top para may sapat na espasyo ang mas malaking image sa screen */
+    /* Binago: Nilakihan ang padding-top (140px) at margin-top (140px) para mag-fit ang mas malaking image at mapalapit sa text */
+    padding: 140px 25px 40px; 
+    margin-top: 140px; 
     
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     position: relative;
@@ -51,10 +52,10 @@ p {
 
 /* Updated Overlapping Image Styling */
 .jollibee-img {
-    width: 190px; /* Pinalaki mula sa 120px */
+    width: 280px; /* Binago: Mas pinalaki pa nang husto ang image */
     height: auto;
     position: absolute;
-    top: -95px; /* Dinikit pababa, kalahati ng bagong height para saktong natural na nakadikit sa card */
+    top: -120px; /* Binago: Ibinaba para mas dumikit sa "Hello I am Austin" text */
     left: 50%;
     transform: translateX(-50%);
 }
