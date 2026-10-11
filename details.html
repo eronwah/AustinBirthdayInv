@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Austin's 1st Birthday - Details</title>
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Austin's 1st Birthday - Details">
+    <meta property="og:description" content="Church, party venue, and countdown.">
+    <meta property="og:image" content="https://eronwah.github.io/AustinBirthdayInv/assets/preview.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://eronwah.github.io/AustinBirthdayInv/details.html">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- PAGE 2: MAIN INVITATION -->
+    <div id="invitationPage" class="card-container card-plain active">
+        <div class="balloons" aria-hidden="true">
+            <span class="balloon b1"></span>
+            <span class="balloon b2"></span>
+            <span class="balloon b3"></span>
+        </div>
+
+        <h1>Yay! Thank you!</h1>
+        <p class="lead">You are invited to celebrate</p>
+
+        <div class="hero has-photo" id="hero">
+            <div class="photo-frame">
+                <img src="assets/austin-photo.jpg?v=2" alt="Austin" id="celebPhoto" decoding="async">
+            </div>
+            <div class="age-badge" id="ageBadge" role="button" tabindex="0" aria-label="Tap for confetti">
+                <span class="age-num">1</span>
+                <span class="age-txt">year old</span>
+            </div>
+        </div>
+
+        <h2 class="celebrant">Austin Dagsaan Libunao</h2>
+        <p class="date-line">&#127874; November 14, 2026</p>
+
+        <!-- Countdown -->
+        <div class="countdown" id="countdown" aria-live="polite">
+            <div><b id="cdDays">--</b><small>days</small></div>
+            <div><b id="cdHours">--</b><small>hours</small></div>
+            <div><b id="cdMins">--</b><small>mins</small></div>
+            <div><b id="cdSecs">--</b><small>secs</small></div>
+        </div>
+
+        <!-- Tap-to-open detail cards -->
+        <p class="hint">Tap a card to see the place &#128071;</p>
+        <div class="detail">
+            <button class="detail-head" aria-expanded="false">
+                <span class="d-icon">&#9962;</span>
+                <span class="d-text"><strong>Church</strong><em>10:30 AM</em></span>
+                <span class="d-arrow">&#9662;</span>
+            </button>
+            <div class="detail-body">
+                <p>Saint John Nepomucene Parochial School</p>
+                <a class="btn-map" target="_blank" rel="noopener"
+                   href="https://www.google.com/maps/search/?api=1&query=Saint+John+Nepomucene+Parochial+School+Cabiao">&#128205; Open in Maps</a>
+            </div>
+        </div>
+
+        <div class="detail">
+            <button class="detail-head" aria-expanded="false">
+                <span class="d-icon">&#127828;</span>
+                <span class="d-text"><strong>Party Venue</strong><em>1:00 PM</em></span>
+                <span class="d-arrow">&#9662;</span>
+            </button>
+            <div class="detail-body">
+                <p>Jollibee Cabiao</p>
+                <a class="btn-map" target="_blank" rel="noopener"
+                   href="https://www.google.com/maps/search/?api=1&query=Jollibee+Cabiao">&#128205; Open in Maps</a>
+            </div>
+        </div>
+
+        <a id="calBtn" class="btn-yes btn-cal" target="_blank" rel="noopener">&#128197; Add to Google Calendar</a>
+        <button id="confettiBtn" class="btn-confetti">&#127881; Tap for confetti!</button>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // ---------- Details page ----------
+        const EVENT_START = new Date(2026, 10, 14, 10, 30); // Nov 14, 2026 10:30 AM
+
+        function updateCountdown() {
+            const diff = EVENT_START - new Date();
+            const box = document.getElementById('countdown');
+            if (diff <= 0) {
+                box.innerHTML = '<div class="cd-done">It\'s party time! \uD83C\uDF89</div>';
+                return;
+            }
+            const s = Math.floor(diff / 1000);
+            document.getElementById('cdDays').textContent = Math.floor(s / 86400);
+            document.getElementById('cdHours').textContent = String(Math.floor(s % 86400 / 3600)).padStart(2, '0');
+            document.getElementById('cdMins').textContent = String(Math.floor(s % 3600 / 60)).padStart(2, '0');
+            document.getElementById('cdSecs').textContent = String(s % 60).padStart(2, '0');
+        }
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Tap-to-open detail cards
+        document.querySelectorAll('.detail-head').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                const card = btn.parentElement;
+                const open = card.classList.toggle('open');
+                btn.setAttribute('aria-expanded', open);
+            });
+        });
+
+        // Confetti triggers
+        document.getElementById('confettiBtn').addEventListener('click', () => confettiBurst(40));
+        const badge = document.getElementById('ageBadge');
+        badge.addEventListener('click', () => confettiBurst(25));
+        badge.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') confettiBurst(25); });
+
+        // Photo: itatago lang kung hindi ma-load ang image
+        document.getElementById('celebPhoto').addEventListener('error', function () {
+            document.getElementById('hero').classList.remove('has-photo');
+        });
+
+        // Add to Google Calendar (10:30 AM - 4:00 PM, Philippine time)
+        document.getElementById('calBtn').href = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+            + '&text=' + encodeURIComponent("Austin's 1st Birthday")
+            + '&dates=20261114T103000/20261114T160000&ctz=Asia/Manila'
+            + '&location=' + encodeURIComponent('Church: Saint John Nepomucene Parochial School | Party: Jollibee Cabiao')
+            + '&details=' + encodeURIComponent('Church 10:30 AM - Saint John Nepomucene Parochial School. Party 1:00 PM - Jollibee Cabiao.');
+
+        // Confetti pagdating sa page
+        setTimeout(function () { confettiBurst(30); }, 400);
+    </script>
+
+</body>
+</html>

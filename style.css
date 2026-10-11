@@ -339,6 +339,9 @@ p {
 
 /* Action buttons */
 .btn-cal {
+    display: block;
+    text-decoration: none;
+    text-align: center;
     width: 100%;
     font-size: 1.2rem;
     padding: 14px 20px;
@@ -490,63 +493,177 @@ p {
     display: none;
 }
 
+
 /* =========================================
-   Calendar chooser
+   GUEST PAGE (guest.html)
    ========================================= */
-.cal-sheet {
+.guest-card {
+    overflow: hidden; /* walang lalampas sa box */
+    padding-bottom: 28px;
+}
+
+/* Bounce papasok mula sa ibaba (pambata: may overshoot) */
+.pop {
+    -webkit-animation: bounceUp 0.9s cubic-bezier(0.28, 0.84, 0.42, 1) both;
+    animation: bounceUp 0.9s cubic-bezier(0.28, 0.84, 0.42, 1) both;
+}
+.d1 { -webkit-animation-delay: 0.2s; animation-delay: 0.2s; }
+.d2 { -webkit-animation-delay: 0.6s; animation-delay: 0.6s; }
+.d3 { -webkit-animation-delay: 1.0s; animation-delay: 1.0s; }
+.d4 { -webkit-animation-delay: 1.4s; animation-delay: 1.4s; }
+.d5 { -webkit-animation-delay: 1.55s; animation-delay: 1.55s; }
+.d6 { -webkit-animation-delay: 1.7s; animation-delay: 1.7s; }
+.d7 { -webkit-animation-delay: 2.1s; animation-delay: 2.1s; }
+.d8 { -webkit-animation-delay: 2.4s; animation-delay: 2.4s; }
+
+@-webkit-keyframes bounceUp {
+    0%   { opacity: 0; -webkit-transform: translate3d(0, 140px, 0) scale(0.7); }
+    55%  { opacity: 1; -webkit-transform: translate3d(0, -16px, 0) scale(1.06); }
+    75%  { -webkit-transform: translate3d(0, 6px, 0) scale(0.98); }
+    100% { opacity: 1; -webkit-transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes bounceUp {
+    0%   { opacity: 0; transform: translate3d(0, 140px, 0) scale(0.7); }
+    55%  { opacity: 1; transform: translate3d(0, -16px, 0) scale(1.06); }
+    75%  { transform: translate3d(0, 6px, 0) scale(0.98); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+/* Curved title */
+.curve-title {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 0 auto -6px;
+    overflow: visible;
+}
+.curve-title text {
+    font-family: 'Fredoka One', cursive;
+    font-size: 25px;
+    fill: #E51B24;
+    stroke: #ffffff;
+    stroke-width: 0.5px;
+}
+
+/* Highlighted na pangalan ng celebrant */
+.guest-name {
+    margin: 0 0 6px;
+    font-size: 1.7rem;
+    line-height: 1.25;
+}
+.guest-name span {
+    display: inline-block;
+    padding: 6px 16px;
+    background: #F9A72B;
+    color: #E51B24;
+    border-radius: 14px;
+    box-shadow: 0 4px 0 #d98a12;
+}
+
+.guest-bday {
+    font-size: 2.6rem;
+    margin-bottom: 8px;
+}
+
+/* Tatlong larawan sa isang hanay, nasa loob ng card */
+.trio {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: flex-end;
+    align-items: flex-end;
+    width: 100%;
+    margin: 4px 0 10px;
+    overflow: hidden;
+}
+.trio-side { -webkit-flex: 0 0 28%; flex: 0 0 28%; padding: 0 2px; }
+.trio-mid  { -webkit-flex: 0 0 44%; flex: 0 0 44%; padding: 0 2px; }
+.trio img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.guest-q {
+    font-size: 1.25rem;
+    color: #E51B24;
+    margin-bottom: 12px;
+}
+
+.btn-go {
+    width: 100%;
+    font-size: 1.3rem;
+    line-height: 1.2;
+    padding: 14px 18px;
+    -webkit-animation: bounceUp 0.9s cubic-bezier(0.28, 0.84, 0.42, 1) 2.4s both,
+                       btnPulse 1.6s ease-in-out 3.4s infinite;
+    animation: bounceUp 0.9s cubic-bezier(0.28, 0.84, 0.42, 1) 2.4s both,
+               btnPulse 1.6s ease-in-out 3.4s infinite;
+}
+
+@-webkit-keyframes btnPulse {
+    0%, 100% { -webkit-transform: scale(1); }
+    50%      { -webkit-transform: scale(1.05); }
+}
+@keyframes btnPulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.05); }
+}
+
+/* Kusang lumalabas na balloons */
+#balloonLayer {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 10000;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    background: rgba(0, 0, 0, 0.55);
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 5000;
 }
-
-.cal-box {
+.fly-balloon {
+    position: absolute;
+    bottom: -90px;
+    -webkit-animation: balloonRise 9s linear forwards;
+    animation: balloonRise 9s linear forwards;
+}
+.fly-balloon-body {
+    display: block;
     width: 100%;
-    max-width: 400px;
-    background: #ffffff;
-    border-top: 6px solid #F9A72B;
-    border-radius: 25px 25px 0 0;
-    padding: 22px 20px 26px;
-    text-align: center;
+    height: 100%;
+    border-radius: 50% 50% 50% 50% / 42% 42% 58% 58%;
+    border: 2px solid rgba(255, 255, 255, 0.85);
+    box-shadow: inset -5px -6px 0 rgba(0, 0, 0, 0.12);
+    opacity: 0.92;
+    -webkit-animation: balloonSway 2.4s ease-in-out infinite;
+    animation: balloonSway 2.4s ease-in-out infinite;
+}
+@-webkit-keyframes balloonRise {
+    0%   { -webkit-transform: translate3d(0, 0, 0); }
+    100% { -webkit-transform: translate3d(0, var(--rise, -800px), 0); }
+}
+@keyframes balloonRise {
+    0%   { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(0, var(--rise, -800px), 0); }
+}
+@-webkit-keyframes balloonSway {
+    0%, 100% { -webkit-transform: translateX(-10px) rotate(-4deg); }
+    50%      { -webkit-transform: translateX(10px) rotate(4deg); }
+}
+@keyframes balloonSway {
+    0%, 100% { transform: translateX(-10px) rotate(-4deg); }
+    50%      { transform: translateX(10px) rotate(4deg); }
 }
 
-.cal-box h2 {
-    font-size: 1.4rem;
-    margin-bottom: 14px;
+@media (prefers-reduced-motion: reduce) {
+    .pop, .btn-go { -webkit-animation: none; animation: none; opacity: 1; }
 }
 
-.cal-opt {
-    display: block;
-    background: #F9A72B;
-    color: #E51B24;
-    text-decoration: none;
-    font-family: 'Fredoka One', cursive;
-    font-size: 1.15rem;
-    padding: 12px;
-    border-radius: 50px;
-    margin-bottom: 10px;
-}
-
-.cal-close {
-    background: none;
-    border: none;
-    color: #E51B24;
-    font-family: inherit;
-    font-weight: 700;
-    font-size: 1rem;
-    padding: 8px 16px;
-    cursor: pointer;
-}
-
-.cal-box small {
-    display: block;
-    margin-top: 8px;
-    font-size: 0.8rem;
-    color: #555555;
+/* Maliliit na phone (320-350px): paliitin ang text para kasya sa isang screen */
+@media (max-width: 350px) {
+    .guest-card { padding-left: 14px; padding-right: 14px; padding-bottom: 22px; }
+    .guest-name { font-size: 1.3rem; }
+    .guest-name span { padding: 5px 12px; }
+    .guest-bday { font-size: 2.1rem; }
+    .guest-q { font-size: 1.05rem; margin-bottom: 10px; }
+    .btn-go { font-size: 1.05rem; padding: 12px 14px; }
 }

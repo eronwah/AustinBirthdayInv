@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You're invited to Austin's 1st Birthday!</title>
+
+    <!-- Link preview (Messenger/Facebook). Palitan ang URL kapag lumipat sa Cloudflare (og:image at og:url) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="You're invited to Austin's 1st Birthday!">
+    <meta property="og:description" content="Tap to see the details and join the party!">
+    <meta property="og:image" content="https://eronwah.github.io/AustinBirthdayInv/assets/preview.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Envelope invitation for Austin's 1st Birthday">
+    <meta property="og:url" content="https://eronwah.github.io/AustinBirthdayInv/guest.html">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="guestPage" class="card-container card-plain guest-card active">
+
+        <!-- Curved na text -->
+        <svg class="curve-title pop d1" viewBox="0 22 360 86" aria-label="Join us as we Celebrate!">
+            <path id="curvePath" d="M 5 100 Q 180 -15 355 100" fill="none"/>
+            <text>
+                <textPath href="#curvePath" xlink:href="#curvePath" startOffset="50%" text-anchor="middle">Join us as we Celebrate!</textPath>
+            </text>
+        </svg>
+
+        <h2 class="guest-name pop d2"><span>Austin Dagsaan Libunao</span></h2>
+        <h1 class="guest-bday pop d3">1st Birthday!</h1>
+
+        <!-- Mga larawan: nasa loob lang ng card, hindi nagpapatong -->
+        <div class="trio">
+            <div class="trio-side pop d4"><img src="assets/jollibee.png" alt="Jollibee" id="imgJollibee"></div>
+            <div class="trio-mid pop d5"><img src="assets/main-image.png" alt="Austin" id="imgAustin"></div>
+            <div class="trio-side pop d6"><img src="assets/hetty.png" alt="Hetty" id="imgHetty"></div>
+        </div>
+
+        <p class="guest-q pop d7">Are you in for the party?</p>
+        <button id="goBtn" class="btn-yes btn-go pop d8">Yes I am going to the party!</button>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Itago (pero panatilihin ang puwesto) ng larawang hindi ma-load
+        ['imgJollibee', 'imgAustin', 'imgHetty'].forEach(function (id) {
+            document.getElementById(id).addEventListener('error', function () {
+                this.style.visibility = 'hidden';
+            });
+        });
+
+        startBalloons();
+
+        document.getElementById('goBtn').addEventListener('click', function () {
+            confettiBurst(30);
+            setTimeout(function () { window.location.href = 'details.html'; }, 700);
+        });
+    </script>
+
+</body>
+</html>
