@@ -667,3 +667,132 @@ p {
     .guest-q { font-size: 1.05rem; margin-bottom: 10px; }
     .btn-go { font-size: 1.05rem; padding: 12px 14px; }
 }
+
+
+/* =========================================
+   PARTY LOOK (guest, Ninong/Ninang, details)
+   ========================================= */
+
+/* Pulang background na may polka dots */
+body.party-bg {
+    background-color: #E51B24;
+    background-image:
+        radial-gradient(circle, #c9151d 0, #c9151d 8px, transparent 9px),
+        radial-gradient(circle, #c9151d 0, #c9151d 8px, transparent 9px);
+    background-size: 56px 56px;
+    background-position: 0 0, 28px 28px;
+    padding-top: 60px;
+}
+
+/* Bunting (watawat) sa itaas ng screen */
+.bunting {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 46px;
+    z-index: 0;
+    pointer-events: none;
+    background-repeat: repeat-x;
+    background-size: 80px 46px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='46'%3E%3Cpath d='M0 5 Q40 12 80 5' stroke='%238e0d14' stroke-width='3' fill='none'/%3E%3Cpolygon points='4,7 36,10 20,42' fill='%23F9A72B'/%3E%3Cpolygon points='44,10 76,7 60,42' fill='%23ffffff'/%3E%3C/svg%3E");
+}
+
+/* Para nasa ibabaw ng bunting ang card */
+.card-container {
+    z-index: 1;
+}
+
+/* Stitched (tahi) na border sa loob ng card */
+.card-container::before {
+    content: '';
+    position: absolute;
+    top: 9px;
+    left: 9px;
+    right: 9px;
+    bottom: 9px;
+    border: 2px dashed rgba(229, 27, 36, 0.4);
+    border-radius: 17px;
+    pointer-events: none;
+}
+
+/* ---- Guest page: mas masayang disenyo ---- */
+.guest-card {
+    padding-left: 18px;
+    padding-right: 18px;
+}
+
+.guest-bday {
+    text-shadow: 3px 3px 0 #F9A72B;
+}
+
+/* Sunburst na stage para sa tatlong larawan */
+.trio {
+    position: relative;
+    padding: 12px 4px 0;
+    border: 3px solid #F9A72B;
+    border-radius: 18px;
+    background-color: #FFF4D6;
+    background-image: repeating-conic-gradient(from 0deg at 50% 100%, #FFE08A 0deg 10deg, #FFF4D6 10deg 20deg);
+}
+.trio > * {
+    position: relative;
+}
+
+/* ---- Ninong/Ninang page ---- */
+.btn-pulse {
+    -webkit-animation: bounceUp 0.9s cubic-bezier(0.28, 0.84, 0.42, 1) 1.5s both,
+                       btnPulse 1.6s ease-in-out 2.5s infinite;
+    animation: bounceUp 0.9s cubic-bezier(0.28, 0.84, 0.42, 1) 1.5s both,
+               btnPulse 1.6s ease-in-out 2.5s infinite;
+}
+
+.tap-hint {
+    margin: 14px 0 0;
+    font-size: 0.95rem;
+    color: #E51B24;
+}
+
+/* Larawan ni Austin: pop-in, tapos bahagyang bobbing. Pindutin para sa confetti */
+.jollibee-img {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-animation: imgPop 0.9s cubic-bezier(0.28, 0.84, 0.42, 1) 0.1s both,
+                       imgBob 2.4s ease-in-out 1.2s infinite;
+    animation: imgPop 0.9s cubic-bezier(0.28, 0.84, 0.42, 1) 0.1s both,
+               imgBob 2.4s ease-in-out 1.2s infinite;
+}
+
+@-webkit-keyframes imgPop {
+    0%   { opacity: 0; -webkit-transform: translate(-50%, 140px) scale(0.6); }
+    55%  { opacity: 1; -webkit-transform: translate(-50%, -14px) scale(1.06); }
+    75%  { -webkit-transform: translate(-50%, 6px) scale(0.98); }
+    100% { opacity: 1; -webkit-transform: translate(-50%, 0) scale(1); }
+}
+@keyframes imgPop {
+    0%   { opacity: 0; transform: translate(-50%, 140px) scale(0.6); }
+    55%  { opacity: 1; transform: translate(-50%, -14px) scale(1.06); }
+    75%  { transform: translate(-50%, 6px) scale(0.98); }
+    100% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+@-webkit-keyframes imgBob {
+    0%, 100% { -webkit-transform: translate(-50%, 0); }
+    50%      { -webkit-transform: translate(-50%, -8px); }
+}
+@keyframes imgBob {
+    0%, 100% { transform: translate(-50%, 0); }
+    50%      { transform: translate(-50%, -8px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .btn-pulse, .jollibee-img { -webkit-animation: none; animation: none; opacity: 1; }
+    .jollibee-img { transform: translateX(-50%); }
+}
+
+/* Limitahan ang taas ng larawan ni Austin para hindi tumama sa text, kahit anong hugis ng larawan */
+.jollibee-img {
+    width: auto;
+    height: auto;
+    max-width: var(--img-w);
+    max-height: calc(var(--img-w) * 0.92);
+}

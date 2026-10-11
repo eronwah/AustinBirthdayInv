@@ -5,18 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Austin's 1st Birthday - Details</title>
 
+    <!-- Link preview (Messenger/Facebook). Palitan ang URL kapag lumipat sa Cloudflare -->
+    <meta name="description" content="Church, party venue, and countdown.">
+    <link rel="canonical" href="https://eronwah.github.io/AustinBirthdayInv/details.html">
     <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Austin's 1st Birthday">
     <meta property="og:title" content="Austin's 1st Birthday - Details">
     <meta property="og:description" content="Church, party venue, and countdown.">
+    <meta property="og:url" content="https://eronwah.github.io/AustinBirthdayInv/details.html">
     <meta property="og:image" content="https://eronwah.github.io/AustinBirthdayInv/assets/preview.jpg">
+    <meta property="og:image:secure_url" content="https://eronwah.github.io/AustinBirthdayInv/assets/preview.jpg">
+    <meta property="og:image:type" content="image/jpeg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:url" content="https://eronwah.github.io/AustinBirthdayInv/details.html">
+    <meta property="og:image:alt" content="Envelope invitation for Austin's 1st Birthday">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Austin's 1st Birthday - Details">
+    <meta name="twitter:image" content="https://eronwah.github.io/AustinBirthdayInv/assets/preview.jpg">
     <link rel="stylesheet" href="style.css">
+    <script>
+        // Kapag nag-refresh ang bisita dito, ibalik sila sa link na ipinadala sa kanila (Guest o Ninong/Ninang)
+        (function () {
+            var pages = { guest: 'guest.html', ninong: 'index.html' };
+            var m = window.location.search.match(/[?&]from=([a-z]+)/);
+            var from = m ? m[1] : null;
+            try {
+                if (from) { sessionStorage.setItem('entry', from); }
+                else { from = sessionStorage.getItem('entry'); }
+            } catch (e) {}
+            var reloaded = false;
+            try {
+                var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+                reloaded = nav ? nav.type === 'reload' : (performance.navigation && performance.navigation.type === 1);
+            } catch (e) {}
+            if (reloaded && from && pages[from]) { window.location.replace(pages[from]); }
+        })();
+    </script>
 </head>
-<body>
+<body class="party-bg">
 
     <!-- PAGE 2: MAIN INVITATION -->
+    <div class="bunting" aria-hidden="true"></div>
+
     <div id="invitationPage" class="card-container card-plain active">
         <div class="balloons" aria-hidden="true">
             <span class="balloon b1"></span>

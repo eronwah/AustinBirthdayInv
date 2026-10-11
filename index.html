@@ -5,29 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Austin's 1st Birthday!</title>
 
-    <!-- Link preview (Messenger/Facebook). Palitan ang URL kapag lumipat sa Cloudflare (og:image at og:url) -->
+    <!-- Link preview (Messenger/Facebook). Palitan ang URL kapag lumipat sa Cloudflare -->
+    <meta name="description" content="Austin has something to ask you. Tap to open!">
+    <link rel="canonical" href="https://eronwah.github.io/AustinBirthdayInv/">
     <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Austin's 1st Birthday">
     <meta property="og:title" content="A special question from Austin">
     <meta property="og:description" content="Austin has something to ask you. Tap to open!">
-    <meta property="og:image" content="https://eronwah.github.io/AustinBirthdayInv/assets/preview.jpg">
+    <meta property="og:url" content="https://eronwah.github.io/AustinBirthdayInv/">
+    <meta property="og:image" content="https://eronwah.github.io/AustinBirthdayInv/assets/preview-ninong.jpg">
+    <meta property="og:image:secure_url" content="https://eronwah.github.io/AustinBirthdayInv/assets/preview-ninong.jpg">
+    <meta property="og:image:type" content="image/jpeg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Envelope invitation for Austin's 1st Birthday">
-    <meta property="og:url" content="https://eronwah.github.io/AustinBirthdayInv/">
+    <meta property="og:image:alt" content="Envelope: A special question from Austin">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="A special question from Austin">
+    <meta name="twitter:image" content="https://eronwah.github.io/AustinBirthdayInv/assets/preview-ninong.jpg">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="party-bg">
 
-    <!-- PAGE 1: NINONG/NINANG PROPOSAL -->
+    <div class="bunting" aria-hidden="true"></div>
+
+    <!-- NINONG/NINANG PROPOSAL -->
     <div id="proposalPage" class="card-container active">
-        <!-- Placeholder image na naka-link sa assets folder sa github mo -->
         <img src="assets/main-image.png" alt="Austin" class="jollibee-img" id="mainImg">
-        
-        <h1>Hello I am Austin!</h1>
-        <p>As I am turning one I wanted to ask you...</p>
-        <h2>Will you be my<br>Ninong/Ninang?</h2>
-        
-        <button id="yesBtn" class="btn-yes">Yes!</button>
+
+        <h1 class="pop d1">Hello I am Austin!</h1>
+        <p class="pop d2">As I am turning one I wanted to ask you...</p>
+        <h2 class="pop d3">Will you be my<br>Ninong/Ninang?</h2>
+
+        <button id="yesBtn" class="btn-yes btn-pulse">Yes!</button>
+        <p class="tap-hint">Tap Austin for a surprise! &#127881;</p>
     </div>
 
     <script src="script.js"></script>
@@ -38,10 +48,17 @@
             document.getElementById('proposalPage').classList.add('no-image');
         });
 
-        // Yes! -> confetti, tapos punta sa details page
+        // Bawat pindot sa larawan ni Austin = confetti
+        document.getElementById('mainImg').addEventListener('click', function () {
+            confettiBurst(20);
+        });
+
+        startBalloons();
+
+        // Yes! -> confetti, tapos punta sa details page (tandaan kung saan galing)
         document.getElementById('yesBtn').addEventListener('click', function () {
             confettiBurst(30);
-            setTimeout(function () { window.location.href = 'details.html'; }, 700);
+            setTimeout(function () { window.location.href = 'details.html?from=ninong'; }, 700);
         });
     </script>
 
