@@ -31,9 +31,14 @@
         <h1>Yay! Thank you!</h1>
         <p class="lead">You are invited to celebrate</p>
 
-        <div class="age-badge" id="ageBadge" role="button" tabindex="0" aria-label="Tap for confetti">
-            <span class="age-num">1</span>
-            <span class="age-txt">year old</span>
+        <div class="hero" id="hero">
+            <div class="photo-frame">
+                <img src="assets/austin-photo.png" alt="Austin" id="celebPhoto">
+            </div>
+            <div class="age-badge" id="ageBadge" role="button" tabindex="0" aria-label="Tap for confetti">
+                <span class="age-num">1</span>
+                <span class="age-txt">year old</span>
+            </div>
         </div>
 
         <h2 class="celebrant">Austin Dagsaan Libunao</h2>
@@ -48,6 +53,7 @@
         </div>
 
         <!-- Tap-to-open detail cards -->
+        <p class="hint">Tap a card to see the place &#128071;</p>
         <div class="detail">
             <button class="detail-head" aria-expanded="false">
                 <span class="d-icon">&#9962;</span>
@@ -78,6 +84,18 @@
         <button id="confettiBtn" class="btn-confetti">&#127881; Tap for confetti!</button>
     </div>
 
+    <!-- Calendar chooser (nasa labas ng card para tama ang position) -->
+    <div id="calSheet" class="cal-sheet hidden" role="dialog" aria-label="Add to calendar">
+        <div class="cal-box">
+            <h2>Add to your calendar</h2>
+            <a id="calGoogle" class="cal-opt" target="_blank" rel="noopener">Google Calendar</a>
+            <a id="calApple" class="cal-opt">Apple Calendar (iPhone)</a>
+            <a id="calOutlook" class="cal-opt" target="_blank" rel="noopener">Outlook</a>
+            <button id="calClose" class="cal-close">Close</button>
+            <small>If nothing opens, tap the &#8943; menu in Messenger and choose "Open in browser".</small>
+        </div>
+    </div>
+
     <script>
         // Kung hindi ma-load ang image, tanggalin ito at alisin ang malaking puwang sa itaas
         document.getElementById('mainImg').addEventListener('error', function () {
@@ -91,23 +109,36 @@
         const EVENT_START = new Date(2026, 10, 14, 10, 30); // Nov 14, 2026 10:30 AM
 
         function confettiBurst(count) {
-            const pieces = ['\uD83C\uDF89', '\uD83C\uDF88', '\u2B50', '\uD83C\uDF54', '\uD83C\uDF5F', '\uD83C\uDF82'];
-            const colors = ['#E51B24', '#F9A72B', '#ffffff', '#ffd54f'];
+            // Gumagamit ng sariling layer at pixel values (hindi vw/vh) para gumana sa in-app browsers tulad ng Messenger
+            let layer = document.getElementById('confettiLayer');
+            if (!layer) {
+                layer = document.createElement('div');
+                layer.id = 'confettiLayer';
+                document.body.appendChild(layer);
+            }
+            const w = window.innerWidth || document.documentElement.clientWidth;
+            const h = window.innerHeight || document.documentElement.clientHeight;
+            const pieces = ['\uD83C\uDF89', '\uD83C\uDF88', '\u2B50', '\uD83C\uDF54', '\uD83C\uDF5F'];
+            const colors = ['#E51B24', '#F9A72B', '#ffd54f', '#ffffff'];
+            count = Math.min(count, 30); // mas magaan para sa phone
+
             for (let i = 0; i < count; i++) {
                 const el = document.createElement('span');
                 el.className = 'confetti';
-                if (Math.random() < 0.35) {
+                if (Math.random() < 0.3) {
                     el.textContent = pieces[Math.floor(Math.random() * pieces.length)];
-                    el.style.fontSize = (18 + Math.random() * 14) + 'px';
+                    el.style.fontSize = '22px';
                 } else {
-                    el.classList.add('confetti-dot');
-                    el.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    el.className += ' confetti-dot';
+                    el.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                 }
-                el.style.left = Math.random() * 100 + 'vw';
-                el.style.animationDuration = (2 + Math.random() * 2) + 's';
-                el.style.animationDelay = (Math.random() * 0.4) + 's';
-                el.addEventListener('animationend', () => el.remove());
-                document.body.appendChild(el);
+                const dur = 2 + Math.random() * 1.5;
+                el.style.left = Math.floor(Math.random() * (w - 24)) + 'px';
+                el.style.setProperty('--fall', (h + 60) + 'px');
+                el.style.webkitAnimationDuration = el.style.animationDuration = dur + 's';
+                el.style.webkitAnimationDelay = el.style.animationDelay = (Math.random() * 0.5) + 's';
+                layer.appendChild(el);
+                setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, (dur + 0.7) * 1000);
             }
         }
 
@@ -142,26 +173,56 @@
         badge.addEventListener('click', () => confettiBurst(25));
         badge.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') confettiBurst(25); });
 
-        // Add to Calendar (.ics)
-        document.getElementById('calBtn').addEventListener('click', function () {
+        // Photo: ipakita lang kung may nag-load na image
+        (function () {
+            const photo = document.getElementById('celebPhoto');
+            const hero = document.getElementById('hero');
+            function ok() { hero.classList.add('has-photo'); }
+            photo.addEventListener('load', ok);
+            if (photo.complete && photo.naturalWidth > 0) ok();
+        })();
+
+        // Add to Calendar
+        (function () {
+            const title = "Austin's 1st Birthday";
+            const location = 'Church: Saint John Nepomucene Parochial School | Party: Jollibee Cabiao';
+            const details = 'Church 10:30 AM - Saint John Nepomucene Parochial School. Party 1:00 PM - Jollibee Cabiao.';
+            // 10:30 AM - 4:00 PM (Philippine time, UTC+8)
+            const googleUrl = 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+                + '&text=' + encodeURIComponent(title)
+                + '&dates=20261114T103000/20261114T160000&ctz=Asia/Manila'
+                + '&location=' + encodeURIComponent(location)
+                + '&details=' + encodeURIComponent(details);
+            const outlookUrl = 'https://outlook.live.com/calendar/0/deeplink/compose?path=%2Fcalendar%2Faction%2Fcompose&rru=addevent'
+                + '&subject=' + encodeURIComponent(title)
+                + '&startdt=' + encodeURIComponent('2026-11-14T10:30:00+08:00')
+                + '&enddt=' + encodeURIComponent('2026-11-14T16:00:00+08:00')
+                + '&location=' + encodeURIComponent(location)
+                + '&body=' + encodeURIComponent(details);
             const ics = [
                 'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Austin 1st Birthday//EN',
-                'BEGIN:VEVENT', 'UID:austin-church-2026@invite', 'DTSTAMP:20261011T000000Z',
-                'DTSTART:20261114T103000', 'DTEND:20261114T120000',
-                'SUMMARY:Austin\'s 1st Birthday - Church',
-                'LOCATION:Saint John Nepomucene Parochial School', 'END:VEVENT',
-                'BEGIN:VEVENT', 'UID:austin-party-2026@invite', 'DTSTAMP:20261011T000000Z',
-                'DTSTART:20261114T130000', 'DTEND:20261114T160000',
-                'SUMMARY:Austin\'s 1st Birthday - Party',
-                'LOCATION:Jollibee Cabiao', 'END:VEVENT', 'END:VCALENDAR'
+                'BEGIN:VEVENT', 'UID:austin-1st-birthday-2026@invite', 'DTSTAMP:20261011T000000Z',
+                'DTSTART:20261114T023000Z', 'DTEND:20261114T080000Z',
+                'SUMMARY:' + title, 'LOCATION:' + location, 'DESCRIPTION:' + details,
+                'END:VEVENT', 'END:VCALENDAR'
             ].join('\r\n');
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar' }));
-            a.download = 'austin-1st-birthday.ics';
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-        });
+
+            document.getElementById('calGoogle').href = googleUrl;
+            document.getElementById('calOutlook').href = outlookUrl;
+            document.getElementById('calApple').href = 'data:text/calendar;charset=utf8,' + encodeURIComponent(ics);
+
+            const sheet = document.getElementById('calSheet');
+            document.getElementById('calBtn').addEventListener('click', function () {
+                // Android: diretso na sa Google Calendar
+                if (/android/i.test(navigator.userAgent)) {
+                    if (!window.open(googleUrl, '_blank')) { window.location.href = googleUrl; }
+                } else {
+                    sheet.classList.remove('hidden');
+                }
+            });
+            document.getElementById('calClose').addEventListener('click', () => sheet.classList.add('hidden'));
+            sheet.addEventListener('click', (e) => { if (e.target === sheet) sheet.classList.add('hidden'); });
+        })();
 
         function showInvitation() {
             setTimeout(() => confettiBurst(50), 300);

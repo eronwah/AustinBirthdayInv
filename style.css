@@ -223,13 +223,19 @@ p {
 }
 
 /* Tap-to-open cards */
+.hint {
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+}
+
 .detail {
-    background: #FFF4D6;
+    background: #ffffff;
     border: 3px solid #F9A72B;
-    border-radius: 18px;
+    border-radius: 20px;
     margin-bottom: 14px;
     overflow: hidden;
     text-align: left;
+    box-shadow: 0 6px 14px rgba(229, 27, 36, 0.18);
 }
 
 .detail-head {
@@ -238,15 +244,28 @@ p {
     align-items: center;
     gap: 12px;
     padding: 12px 14px;
-    background: none;
+    background: #E51B24;
     border: none;
     cursor: pointer;
     font-family: inherit;
     -webkit-tap-highlight-color: transparent;
 }
 
+.detail-head:active {
+    background: #c9151d;
+}
+
 .d-icon {
-    font-size: 1.9rem;
+    width: 46px;
+    height: 46px;
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border: 3px solid #F9A72B;
+    border-radius: 50%;
+    font-size: 1.5rem;
 }
 
 .d-text {
@@ -257,20 +276,25 @@ p {
 
 .d-text strong {
     font-family: 'Fredoka One', cursive;
-    font-size: 1.2rem;
-    color: #E51B24;
+    font-size: 1.25rem;
+    color: #ffffff;
     font-weight: normal;
 }
 
 .d-text em {
+    align-self: flex-start;
+    margin-top: 4px;
+    background: #F9A72B;
+    color: #E51B24;
     font-style: normal;
     font-weight: 700;
-    font-size: 1.05rem;
-    color: #333333;
+    font-size: 1rem;
+    padding: 2px 12px;
+    border-radius: 50px;
 }
 
 .d-arrow {
-    color: #E51B24;
+    color: #ffffff;
     font-size: 1.2rem;
     transition: transform 0.3s ease;
 }
@@ -281,19 +305,25 @@ p {
 
 .detail-body {
     max-height: 0;
-    padding: 0 14px;
+    padding: 0 16px;
     overflow: hidden;
+    text-align: center;
+    background: #FFF9E8;
     transition: max-height 0.35s ease, padding 0.35s ease;
 }
 
 .detail.open .detail-body {
-    max-height: 180px;
-    padding: 0 14px 14px;
+    max-height: 200px;
+    padding: 14px 16px 16px;
+    border-top: 3px dashed #F9A72B;
 }
 
 .detail-body p {
-    font-size: 1.05rem;
-    margin-bottom: 10px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.15rem;
+    font-weight: normal;
+    color: #333333;
+    margin-bottom: 12px;
 }
 
 .btn-map {
@@ -302,8 +332,9 @@ p {
     color: #ffffff;
     text-decoration: none;
     font-weight: 700;
-    padding: 8px 18px;
+    padding: 9px 22px;
     border-radius: 50px;
+    box-shadow: 0 4px 10px rgba(229, 27, 36, 0.3);
 }
 
 /* Action buttons */
@@ -334,7 +365,10 @@ p {
 /* Floating balloons (background) */
 .balloons {
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     pointer-events: none;
     z-index: 0;
 }
@@ -355,16 +389,28 @@ p {
 
 @keyframes floatUp {
     0%   { transform: translateY(0); }
-    100% { transform: translateY(-110vh); }
+    100% { transform: translateY(-700px); }
 }
 
-/* Confetti pieces (nasa body kaya fixed) */
-.confetti {
+/* Confetti: sariling layer, pixel-based, may -webkit- para sa in-app browsers */
+#confettiLayer {
     position: fixed;
-    top: -40px;
-    z-index: 999;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
     pointer-events: none;
-    animation: confettiFall linear forwards;
+    z-index: 9999;
+}
+
+.confetti {
+    position: absolute;
+    top: -30px;
+    display: block;
+    line-height: 1;
+    -webkit-animation: confettiFall 2.5s linear forwards;
+    animation: confettiFall 2.5s linear forwards;
 }
 
 .confetti-dot {
@@ -373,12 +419,133 @@ p {
     border-radius: 2px;
 }
 
+@-webkit-keyframes confettiFall {
+    0%   { -webkit-transform: translate3d(0, 0, 0) rotate(0deg); }
+    100% { -webkit-transform: translate3d(0, var(--fall, 800px), 0) rotate(540deg); }
+}
+
 @keyframes confettiFall {
-    0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(110vh) rotate(540deg); opacity: 0.9; }
+    0%   { transform: translate3d(0, 0, 0) rotate(0deg); }
+    100% { transform: translate3d(0, var(--fall, 800px), 0) rotate(540deg); }
 }
 
 /* Respect "reduce motion" settings */
 @media (prefers-reduced-motion: reduce) {
     .age-badge, .balloon { animation: none; }
+}
+
+
+/* =========================================
+   Celebrant photo (Page 2)
+   ========================================= */
+.hero {
+    position: relative;
+    margin: 0 auto 15px;
+}
+
+.photo-frame {
+    display: none; /* lalabas lang kapag may nag-load na image */
+}
+
+.hero.has-photo {
+    width: 180px;
+    margin-bottom: 22px;
+}
+
+.hero.has-photo .photo-frame {
+    display: block;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 6px solid #F9A72B;
+    box-shadow: 0 0 0 6px #E51B24, 0 10px 20px rgba(0, 0, 0, 0.25);
+    background: #FFF4D6;
+}
+
+.photo-frame img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Ang "1" badge ay nagiging sticker sa gilid ng larawan */
+.hero.has-photo .age-badge {
+    position: absolute;
+    right: -22px;
+    bottom: -8px;
+    width: 70px;
+    height: 70px;
+    margin: 0;
+    border-width: 4px;
+}
+
+.hero.has-photo .age-num {
+    font-size: 2.4rem;
+}
+
+.hero.has-photo .age-txt {
+    display: none;
+}
+
+/* =========================================
+   Calendar chooser
+   ========================================= */
+.cal-sheet {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.55);
+}
+
+.cal-box {
+    width: 100%;
+    max-width: 400px;
+    background: #ffffff;
+    border-top: 6px solid #F9A72B;
+    border-radius: 25px 25px 0 0;
+    padding: 22px 20px 26px;
+    text-align: center;
+}
+
+.cal-box h2 {
+    font-size: 1.4rem;
+    margin-bottom: 14px;
+}
+
+.cal-opt {
+    display: block;
+    background: #F9A72B;
+    color: #E51B24;
+    text-decoration: none;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.15rem;
+    padding: 12px;
+    border-radius: 50px;
+    margin-bottom: 10px;
+}
+
+.cal-close {
+    background: none;
+    border: none;
+    color: #E51B24;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.cal-box small {
+    display: block;
+    margin-top: 8px;
+    font-size: 0.8rem;
+    color: #555555;
 }
