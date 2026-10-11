@@ -36,45 +36,143 @@ function confettiBurst(count) {
     }
 }
 
-/* Kusang lumalabas na balloons mula sa ibaba (hanggang 7 lang nang sabay) */
+/* Confetti na sumasabog mula sa isang puwesto (halimbawa, mula mismo sa button) */
+function confettiAt(x, y, count) {
+    var layer = document.getElementById('confettiLayer');
+    if (!layer) {
+        layer = document.createElement('div');
+        layer.id = 'confettiLayer';
+        document.body.appendChild(layer);
+    }
+    var pieces = ['\uD83C\uDF89', '\uD83C\uDF88', '\u2B50', '\uD83C\uDF54', '\uD83C\uDF5F'];
+    var colors = ['#E51B24', '#F9A72B', '#ffd54f', '#ffffff'];
+    count = Math.min(count || 26, 30);
+
+    for (var i = 0; i < count; i++) {
+        (function () {
+            var el = document.createElement('span');
+            el.className = 'burst';
+            if (Math.random() < 0.3) {
+                el.textContent = pieces[Math.floor(Math.random() * pieces.length)];
+                el.style.fontSize = '22px';
+            } else {
+                el.className += ' confetti-dot';
+                el.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            }
+            var angle = Math.random() * Math.PI * 2;
+            var dist = 70 + Math.random() * 140;
+            var dx = Math.cos(angle) * dist;
+            var dy = Math.sin(angle) * dist - 50;   // bahagyang pataas muna
+            var dur = 0.9 + Math.random() * 0.5;
+            el.style.left = x + 'px';
+            el.style.top = y + 'px';
+            el.style.setProperty('--dx', dx.toFixed(0) + 'px');
+            el.style.setProperty('--dy', dy.toFixed(0) + 'px');
+            el.style.setProperty('--dy2', (dy + 120).toFixed(0) + 'px');
+            el.style.webkitAnimationDuration = el.style.animationDuration = dur + 's';
+            layer.appendChild(el);
+            setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, (dur + 0.2) * 1000);
+        })();
+    }
+}
+
+function confettiFromEl(el, count) {
+    var r = el.getBoundingClientRect();
+    confettiAt(r.left + r.width / 2, r.top + r.height / 2, count);
+}
+
+/* Kusang lumalabas na balloons (may tali). Pindutin ang lobo para pumutok! */
 function startBalloons() {
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    var layer = document.createElement('div');
-    layer.id = 'balloonLayer';
-    document.body.appendChild(layer);
+    var layer = document.getElementById('balloonLayer');
+    if (!layer) {
+        layer = document.createElement('div');
+        layer.id = 'balloonLayer';
+        document.body.appendChild(layer);
+    }
 
     var colors = ['#E51B24', '#F9A72B', '#ffffff', '#ffd54f'];
     var active = 0;
 
+    var SVG = '<svg viewBox="0 0 40 80" aria-hidden="true">'
+        + '<path class="hit" d="M20 2 C31 2 38 11 38 22 C38 34 29 43 20 46 C11 43 2 34 2 22 C2 11 9 2 20 2 Z" fill="currentColor" stroke="rgba(0,0,0,0.22)" stroke-width="1.5"/>'
+        + '<path d="M20 46 C29 43 38 34 38 22 C37 33 29 40 20 42 Z" fill="#000" opacity="0.12"/>'
+        + '<ellipse cx="12" cy="14" rx="3.5" ry="6.5" fill="#fff" opacity="0.55" transform="rotate(25 12 14)"/>'
+        + '<polygon class="hit" points="20,45 16.5,51.5 23.5,51.5" fill="currentColor" stroke="rgba(0,0,0,0.22)" stroke-width="1"/>'
+        + '<path d="M20 51.5 C14 58 26 64 20 70 C16 75 23 78 20 80" fill="none" stroke="#555" stroke-width="1.4" stroke-linecap="round"/>'
+        + '</svg>';
+
+    function pop(b, color) {
+        if (b._gone) return;
+        b._gone = true;
+        active--;
+        var r = b.getBoundingClientRect();
+        var cx = r.left + r.width / 2;
+        var cy = r.top + r.width * 0.55;
+
+        var ring = document.createElement('span');
+        ring.className = 'pop-ring';
+        ring.style.left = cx + 'px';
+        ring.style.top = cy + 'px';
+        layer.appendChild(ring);
+        setTimeout(function () { if (ring.parentNode) ring.parentNode.removeChild(ring); }, 400);
+
+        for (var i = 0; i < 10; i++) {
+            (function (i) {
+                var bit = document.createElement('span');
+                bit.className = 'pop-bit';
+                var a = (Math.PI * 2 / 10) * i + Math.random() * 0.5;
+                var d = 40 + Math.random() * 50;
+                bit.style.left = cx + 'px';
+                bit.style.top = cy + 'px';
+                bit.style.backgroundColor = color;
+                bit.style.setProperty('--px', (Math.cos(a) * d).toFixed(0) + 'px');
+                bit.style.setProperty('--py', (Math.sin(a) * d).toFixed(0) + 'px');
+                layer.appendChild(bit);
+                setTimeout(function () { if (bit.parentNode) bit.parentNode.removeChild(bit); }, 700);
+            })(i);
+        }
+        if (b.parentNode) b.parentNode.removeChild(b);
+    }
+
     function spawn() {
-        if (document.hidden || active >= 7) return;
+        if (document.hidden || active >= 6) return;
         var w = window.innerWidth || document.documentElement.clientWidth;
         var h = window.innerHeight || document.documentElement.clientHeight;
-        var size = 34 + Math.floor(Math.random() * 20);
-        var dur = 7 + Math.random() * 4;
+        var size = 44 + Math.floor(Math.random() * 20);
+        var dur = 8 + Math.random() * 4;
+        var color = colors[Math.floor(Math.random() * colors.length)];
 
         var b = document.createElement('div');
         b.className = 'fly-balloon';
         b.style.left = Math.floor(Math.random() * (w - size)) + 'px';
         b.style.width = size + 'px';
-        b.style.height = Math.round(size * 1.25) + 'px';
-        b.style.setProperty('--rise', '-' + (h + 160) + 'px'); // negatibo = pataas
+        b.style.setProperty('--rise', '-' + (h + 180) + 'px'); // negatibo = pataas
         b.style.webkitAnimationDuration = b.style.animationDuration = dur + 's';
 
-        var body = document.createElement('span');
-        body.className = 'fly-balloon-body';
-        body.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        b.appendChild(body);
+        var sway = document.createElement('span');
+        sway.className = 'fly-balloon-sway';
+        sway.style.color = color;
+        sway.innerHTML = SVG;
+        b.appendChild(sway);
+
+        var hits = sway.querySelectorAll('.hit');
+        for (var i = 0; i < hits.length; i++) {
+            hits[i].addEventListener('click', function () { pop(b, color); });
+        }
 
         layer.appendChild(b);
         active++;
         setTimeout(function () {
-            if (b.parentNode) b.parentNode.removeChild(b);
-            active--;
-        }, dur * 1000 + 200);
+            if (!b._gone) {
+                b._gone = true;
+                active--;
+                if (b.parentNode) b.parentNode.removeChild(b);
+            }
+        }, dur * 1000 + 300);
     }
 
     spawn();
-    setInterval(spawn, 1100);
+    setInterval(spawn, 1200);
 }

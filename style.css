@@ -365,36 +365,6 @@ p {
     transform: scale(0.96);
 }
 
-/* Floating balloons (background) */
-.balloons {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    pointer-events: none;
-    z-index: 0;
-}
-
-.balloon {
-    position: absolute;
-    bottom: -60px;
-    width: 34px;
-    height: 44px;
-    border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-    opacity: 0.35;
-    animation: floatUp 9s linear infinite;
-}
-
-.b1 { left: 8%;  background: #E51B24; animation-delay: 0s; }
-.b2 { left: 80%; background: #F9A72B; animation-delay: 3s; }
-.b3 { left: 45%; background: #E51B24; animation-delay: 6s; }
-
-@keyframes floatUp {
-    0%   { transform: translateY(0); }
-    100% { transform: translateY(-700px); }
-}
-
 /* Confetti: sariling layer, pixel-based, may -webkit- para sa in-app browsers */
 #confettiLayer {
     position: fixed;
@@ -434,7 +404,7 @@ p {
 
 /* Respect "reduce motion" settings */
 @media (prefers-reduced-motion: reduce) {
-    .age-badge, .balloon { animation: none; }
+    .age-badge { animation: none; }
 }
 
 
@@ -622,21 +592,33 @@ p {
 }
 .fly-balloon {
     position: absolute;
-    bottom: -90px;
+    bottom: -150px;
+    pointer-events: none;
     -webkit-animation: balloonRise 9s linear forwards;
     animation: balloonRise 9s linear forwards;
 }
-.fly-balloon-body {
+.fly-balloon-sway {
     display: block;
     width: 100%;
-    height: 100%;
-    border-radius: 50% 50% 50% 50% / 42% 42% 58% 58%;
-    border: 2px solid rgba(255, 255, 255, 0.85);
-    box-shadow: inset -5px -6px 0 rgba(0, 0, 0, 0.12);
-    opacity: 0.92;
+    -webkit-transform-origin: 50% 20%;
+    transform-origin: 50% 20%;
     -webkit-animation: balloonSway 2.4s ease-in-out infinite;
     animation: balloonSway 2.4s ease-in-out infinite;
 }
+.fly-balloon svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    pointer-events: none;
+}
+/* Ang lobo lang (hindi ang tali) ang puwedeng pindutin */
+.fly-balloon .hit {
+    pointer-events: auto;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
 @-webkit-keyframes balloonRise {
     0%   { -webkit-transform: translate3d(0, 0, 0); }
     100% { -webkit-transform: translate3d(0, var(--rise, -800px), 0); }
@@ -646,12 +628,12 @@ p {
     100% { transform: translate3d(0, var(--rise, -800px), 0); }
 }
 @-webkit-keyframes balloonSway {
-    0%, 100% { -webkit-transform: translateX(-10px) rotate(-4deg); }
-    50%      { -webkit-transform: translateX(10px) rotate(4deg); }
+    0%, 100% { -webkit-transform: translateX(-10px) rotate(-5deg); }
+    50%      { -webkit-transform: translateX(10px) rotate(5deg); }
 }
 @keyframes balloonSway {
-    0%, 100% { transform: translateX(-10px) rotate(-4deg); }
-    50%      { transform: translateX(10px) rotate(4deg); }
+    0%, 100% { transform: translateX(-10px) rotate(-5deg); }
+    50%      { transform: translateX(10px) rotate(5deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -795,4 +777,66 @@ body.party-bg {
     height: auto;
     max-width: var(--img-w);
     max-height: calc(var(--img-w) * 0.92);
+}
+
+
+/* =========================================
+   Pop ng lobo + confetti na sumasabog mula sa button
+   ========================================= */
+.pop-ring {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    margin: -15px 0 0 -15px;
+    border-radius: 50%;
+    border: 4px solid #ffffff;
+    box-shadow: 0 0 0 2px rgba(249, 167, 43, 0.9);
+    -webkit-animation: ringPop 0.35s ease-out forwards;
+    animation: ringPop 0.35s ease-out forwards;
+}
+@-webkit-keyframes ringPop {
+    0%   { opacity: 1; -webkit-transform: scale(0.4); }
+    100% { opacity: 0; -webkit-transform: scale(2.4); }
+}
+@keyframes ringPop {
+    0%   { opacity: 1; transform: scale(0.4); }
+    100% { opacity: 0; transform: scale(2.4); }
+}
+
+.pop-bit {
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    margin: -4px 0 0 -4px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    -webkit-animation: bitFly 0.6s ease-out forwards;
+    animation: bitFly 0.6s ease-out forwards;
+}
+@-webkit-keyframes bitFly {
+    0%   { opacity: 1; -webkit-transform: translate3d(0, 0, 0) scale(1); }
+    100% { opacity: 0; -webkit-transform: translate3d(var(--px, 0px), var(--py, 0px), 0) scale(0.3); }
+}
+@keyframes bitFly {
+    0%   { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+    100% { opacity: 0; transform: translate3d(var(--px, 0px), var(--py, 0px), 0) scale(0.3); }
+}
+
+/* Confetti na lumilipad palabas mula sa pinindot na button */
+.burst {
+    position: absolute;
+    display: block;
+    line-height: 1;
+    -webkit-animation: burstOut 1.1s ease-out forwards;
+    animation: burstOut 1.1s ease-out forwards;
+}
+@-webkit-keyframes burstOut {
+    0%   { opacity: 1; -webkit-transform: translate3d(0, 0, 0) rotate(0deg) scale(0.6); }
+    60%  { opacity: 1; -webkit-transform: translate3d(var(--dx, 0px), var(--dy, 0px), 0) rotate(300deg) scale(1); }
+    100% { opacity: 0; -webkit-transform: translate3d(var(--dx, 0px), var(--dy2, 0px), 0) rotate(540deg) scale(0.9); }
+}
+@keyframes burstOut {
+    0%   { opacity: 1; transform: translate3d(0, 0, 0) rotate(0deg) scale(0.6); }
+    60%  { opacity: 1; transform: translate3d(var(--dx, 0px), var(--dy, 0px), 0) rotate(300deg) scale(1); }
+    100% { opacity: 0; transform: translate3d(var(--dx, 0px), var(--dy2, 0px), 0) rotate(540deg) scale(0.9); }
 }

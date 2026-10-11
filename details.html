@@ -48,12 +48,6 @@
     <div class="bunting" aria-hidden="true"></div>
 
     <div id="invitationPage" class="card-container card-plain active">
-        <div class="balloons" aria-hidden="true">
-            <span class="balloon b1"></span>
-            <span class="balloon b2"></span>
-            <span class="balloon b3"></span>
-        </div>
-
         <h1>Yay! Thank you!</h1>
         <p class="lead">You are invited to celebrate</p>
 
@@ -157,6 +151,8 @@
             + '&dates=20261114T103000/20261114T160000&ctz=Asia/Manila'
             + '&location=' + encodeURIComponent('Church: Saint John Nepomucene Parochial School | Party: Jollibee Cabiao')
             + '&details=' + encodeURIComponent('Church 10:30 AM - Saint John Nepomucene Parochial School. Party 1:00 PM - Jollibee Cabiao.');
+
+        startBalloons();
 
         // Confetti pagdating sa page
         setTimeout(function () { confettiBurst(30); }, 400);

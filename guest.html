@@ -64,8 +64,8 @@
         startBalloons();
 
         document.getElementById('goBtn').addEventListener('click', function () {
-            confettiBurst(30);
-            setTimeout(function () { window.location.href = 'details.html?from=guest'; }, 700);
+            confettiFromEl(this, 28); // sumasabog mula mismo sa button
+            setTimeout(function () { window.location.href = 'details.html?from=guest'; }, 950);
         });
     </script>
 
