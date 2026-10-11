@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Austin's 1st Birthday!</title>
-    <!-- Dito natin inilink ang CSS file -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <!-- PAGE 1: NINONG/NINANG PROPOSAL -->
     <div id="proposalPage" class="card-container active">
-        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/84/Jollibee_2011_logo.svg/1200px-Jollibee_2011_logo.svg.png" alt="Jollibee Logo" class="jollibee-img">
+        <!-- Placeholder image na naka-link sa assets folder sa github mo -->
+        <img src="assets/main-image.png" alt="Main Image" class="jollibee-img">
         
         <h1>Hello I am Austin!</h1>
         <p>As I am turning one I wanted to ask you...</p>
@@ -28,7 +28,6 @@
     </div>
 
     <script>
-        // JavaScript para ilipat ang view mula Page 1 papuntang Page 2
         function showInvitation() {
             document.getElementById('proposalPage').classList.remove('active');
             document.getElementById('proposalPage').classList.add('hidden');

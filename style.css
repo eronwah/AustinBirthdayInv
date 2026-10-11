@@ -1,4 +1,3 @@
-/* Import ng masayang fonts mula sa Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@600;700&display=swap');
 
 /* Reset at Base Styles */
@@ -26,7 +25,11 @@ body {
     background-color: #ffffff;
     border: 6px solid #F9A72B; /* Jollibee Yellow */
     border-radius: 25px;
-    padding: 40px 25px;
+    
+    /* Inayos ang padding at margin para sa overlapping image */
+    padding: 70px 25px 40px; /* Nilakihan ang top padding (70px) para hindi matakpan ang text ng image */
+    margin-top: 60px; /* Naglagay ng space sa taas para hindi maputol ang ulo ng image sa screen */
+    
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
     position: relative;
 }
@@ -46,10 +49,14 @@ p {
     font-weight: 600;
 }
 
-/* Image Styling */
+/* Overlapping Image Styling */
 .jollibee-img {
     width: 120px;
-    margin-bottom: 20px;
+    height: auto;
+    position: absolute; /* Para makalabas sa box */
+    top: -60px; /* Kalahati ng height (approx 120px) para saktong nasa gitna ng border */
+    left: 50%; /* I-center sa box */
+    transform: translateX(-50%); /* I-center nang eksakto */
 }
 
 /* Button Styling */
