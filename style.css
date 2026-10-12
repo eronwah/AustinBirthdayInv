@@ -723,10 +723,10 @@ body.party-bg {
 
 /* ---- Ninong/Ninang page ---- */
 .btn-pulse {
-    -webkit-animation: bounceUp 0.9s cubic-bezier(0.28, 0.84, 0.42, 1) 1.5s both,
-                       btnPulse 1.6s ease-in-out 2.5s infinite;
-    animation: bounceUp 0.9s cubic-bezier(0.28, 0.84, 0.42, 1) 1.5s both,
-               btnPulse 1.6s ease-in-out 2.5s infinite;
+    -webkit-animation: bounceUp 0.9s cubic-bezier(0.28, 0.84, 0.42, 1) 1.9s both,
+                       btnPulse 1.6s ease-in-out 2.9s infinite;
+    animation: bounceUp 0.9s cubic-bezier(0.28, 0.84, 0.42, 1) 1.9s both,
+               btnPulse 1.6s ease-in-out 2.9s infinite;
 }
 
 .tap-hint {
@@ -839,4 +839,27 @@ body.party-bg {
     0%   { opacity: 1; transform: translate3d(0, 0, 0) rotate(0deg) scale(0.6); }
     60%  { opacity: 1; transform: translate3d(var(--dx, 0px), var(--dy, 0px), 0) rotate(300deg) scale(1); }
     100% { opacity: 0; transform: translate3d(var(--dx, 0px), var(--dy2, 0px), 0) rotate(540deg) scale(0.9); }
+}
+
+
+/* Ninong/Ninang: mensahe (mobile muna) */
+.msg {
+    font-size: 1.05rem;
+    line-height: 1.45;
+    margin-bottom: 12px;
+}
+
+.ask {
+    font-size: 1.8rem;
+    margin-bottom: 18px;
+}
+
+@media (max-width: 350px) {
+    .msg { font-size: 0.95rem; margin-bottom: 10px; }
+    .ask { font-size: 1.5rem; margin-bottom: 14px; }
+}
+
+/* Maiikling screen: paliitin ang larawan ni Austin para kasya ang text at button */
+@media (max-height: 700px) {
+    :root { --img-w: min(220px, 60vw); }
 }
