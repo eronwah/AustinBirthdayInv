@@ -100,11 +100,65 @@
             </div>
         </div>
 
+        <button id="rsvpBtn" class="btn-yes btn-cal btn-rsvp">&#128140; RSVP</button>
         <a id="calBtn" class="btn-yes btn-cal" target="_blank" rel="noopener">&#128197; Add to Google Calendar</a>
         <button id="confettiBtn" class="btn-confetti">&#127881; Tap for confetti!</button>
     </div>
 
+    <!-- RSVP pop-up (nasa labas ng card para tama ang position) -->
+    <div id="rsvpModal" class="rsvp-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="rsvpTitle">
+        <div class="rsvp-sheet">
+            <button id="rsvpClose" class="rsvp-close" aria-label="Close">&times;</button>
+
+            <div id="rsvpFormView">
+                <h2 id="rsvpTitle">RSVP &#127880;</h2>
+                <p id="rsvpSub" class="rsvp-sub">Will you join Austin's 1st birthday?</p>
+
+                <label class="rsvp-label" for="rsvpName">Your name</label>
+                <input id="rsvpName" class="rsvp-input" type="text" maxlength="60" autocomplete="name" placeholder="e.g. Tita Joy">
+
+                <div class="rsvp-label">Will you come?</div>
+                <div class="rsvp-choices">
+                    <button type="button" class="choice" data-val="yes" aria-pressed="false">Yes, I'll be there! &#127881;</button>
+                    <button type="button" class="choice" data-val="no" aria-pressed="false">Can't make it &#128546;</button>
+                </div>
+
+                <div id="guestsRow" class="hidden">
+                    <div class="rsvp-label">How many will come? (including you)</div>
+                    <div class="stepper">
+                        <button type="button" id="guestsMinus" aria-label="Fewer guests">&minus;</button>
+                        <span id="guestsNum">1</span>
+                        <button type="button" id="guestsPlus" aria-label="More guests">+</button>
+                    </div>
+                </div>
+
+                <label class="rsvp-label" for="rsvpMsg">Message for Austin (optional)</label>
+                <textarea id="rsvpMsg" class="rsvp-input" rows="2" maxlength="200" placeholder="Happy birthday, Austin!"></textarea>
+
+                <!-- bitag laban sa bots: dapat walang laman -->
+                <input id="rsvpWebsite" class="hp" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+                <p id="rsvpError" class="rsvp-error" role="alert"></p>
+                <button type="button" id="rsvpSend" class="btn-yes btn-send">Send RSVP</button>
+            </div>
+
+            <div id="rsvpThanks" class="hidden">
+                <h2 id="thanksTitle">Thank you!</h2>
+                <p id="thanksText" class="rsvp-sub"></p>
+                <div id="thanksRecap" class="rsvp-recap">
+                    <div>&#128197; November 14, 2026</div>
+                    <div>&#9962; 10:30 AM &middot; Church</div>
+                    <div>&#127828; 1:00 PM &middot; Jollibee Cabiao</div>
+                    <div id="thanksParty" class="recap-party"></div>
+                </div>
+                <button type="button" id="rsvpDone" class="btn-yes btn-send">Done</button>
+                <button type="button" id="rsvpEdit" class="rsvp-link">Change my answer</button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
+    <script src="rsvp.js"></script>
     <script>
         // ---------- Details page ----------
         const EVENT_START = new Date(2026, 10, 14, 10, 30); // Nov 14, 2026 10:30 AM

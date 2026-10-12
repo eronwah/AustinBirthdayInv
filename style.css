@@ -988,3 +988,233 @@ body.party-bg {
     .ask { font-size: 1.55rem; margin-bottom: 14px; }
     .ask .hl { padding: 3px 14px; }
 }
+
+
+/* =========================================
+   RSVP button + pop-up
+   ========================================= */
+.btn-rsvp {
+    margin-top: 6px;
+    margin-bottom: 4px;
+    -webkit-animation: btnPulse 1.8s ease-in-out infinite;
+    animation: btnPulse 1.8s ease-in-out infinite;
+}
+
+.rsvp-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9000;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: flex-end;
+    align-items: flex-end;
+    -webkit-justify-content: center;
+    justify-content: center;
+    background: rgba(90, 0, 6, 0.65);
+    -webkit-animation: fadeIn 0.25s ease-out both;
+    animation: fadeIn 0.25s ease-out both;
+}
+
+.rsvp-sheet {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    max-height: 92vh;
+    max-height: 92dvh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    background: #ffffff;
+    border-top: 6px solid #F9A72B;
+    border-radius: 26px 26px 0 0;
+    padding: 24px 20px 28px;
+    text-align: center;
+    -webkit-animation: sheetUp 0.5s cubic-bezier(0.28, 0.84, 0.42, 1) both;
+    animation: sheetUp 0.5s cubic-bezier(0.28, 0.84, 0.42, 1) both;
+}
+@-webkit-keyframes sheetUp {
+    0%   { -webkit-transform: translate3d(0, 100%, 0); }
+    70%  { -webkit-transform: translate3d(0, -8px, 0); }
+    100% { -webkit-transform: translate3d(0, 0, 0); }
+}
+@keyframes sheetUp {
+    0%   { transform: translate3d(0, 100%, 0); }
+    70%  { transform: translate3d(0, -8px, 0); }
+    100% { transform: translate3d(0, 0, 0); }
+}
+
+.rsvp-sheet h2 {
+    font-size: 1.8rem;
+    margin-bottom: 4px;
+}
+
+.rsvp-close {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+    background: #FFF4D6;
+    color: #E51B24;
+    font-size: 1.8rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.rsvp-sub {
+    font-size: 1rem;
+    margin-bottom: 14px;
+}
+
+.rsvp-label {
+    display: block;
+    text-align: left;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #E51B24;
+    margin: 12px 0 6px;
+}
+
+.rsvp-input {
+    display: block;
+    width: 100%;
+    font-family: inherit;
+    font-size: 16px; /* para hindi mag-zoom ang iPhone */
+    font-weight: 600;
+    color: #333333;
+    padding: 11px 14px;
+    border: 3px solid #F9A72B;
+    border-radius: 14px;
+    background: #FFFBF0;
+    outline: none;
+    resize: none;
+}
+.rsvp-input:focus {
+    border-color: #E51B24;
+}
+
+.rsvp-choices {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: column;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.choice {
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 12px 14px;
+    border: 3px solid #F9A72B;
+    border-radius: 50px;
+    background: #ffffff;
+    color: #E51B24;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+.choice.on {
+    background: #E51B24;
+    border-color: #E51B24;
+    color: #ffffff;
+    -webkit-transform: scale(1.02);
+    transform: scale(1.02);
+}
+
+.stepper {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    gap: 22px;
+}
+.stepper button {
+    width: 46px;
+    height: 46px;
+    border: none;
+    border-radius: 50%;
+    background: #F9A72B;
+    color: #E51B24;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.7rem;
+    line-height: 1;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+.stepper button:active { -webkit-transform: scale(0.92); transform: scale(0.92); }
+#guestsNum {
+    min-width: 40px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 2rem;
+    color: #E51B24;
+}
+
+.hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.rsvp-error {
+    min-height: 1.3em;
+    margin: 10px 0 6px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #c9151d;
+}
+
+.btn-send {
+    width: 100%;
+    font-size: 1.3rem;
+    padding: 13px 20px;
+}
+.btn-send:disabled {
+    opacity: 0.7;
+}
+
+.rsvp-recap {
+    background: #FFF4D6;
+    border: 3px solid #F9A72B;
+    border-radius: 16px;
+    padding: 12px 14px;
+    margin: 4px 0 16px;
+    font-weight: 700;
+    color: #333333;
+    line-height: 1.7;
+}
+.recap-party {
+    font-family: 'Fredoka One', cursive;
+    color: #E51B24;
+    font-size: 1.15rem;
+}
+
+.rsvp-link {
+    display: block;
+    margin: 12px auto 0;
+    background: none;
+    border: none;
+    color: #E51B24;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+@media (max-height: 600px) {
+    .rsvp-sheet { padding-top: 18px; padding-bottom: 20px; }
+    .rsvp-sheet h2 { font-size: 1.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .btn-rsvp, .rsvp-overlay, .rsvp-sheet { -webkit-animation: none; animation: none; }
+}
