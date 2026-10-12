@@ -176,3 +176,76 @@ function startBalloons() {
     spawn();
     setInterval(spawn, 1200);
 }
+
+
+/* Pasunod-sunod na paglabas ng text (Ninong/Ninang pages):
+   Hello -> bawat salita ng mensahe -> naka-highlight na Ninong?/Ninang? (may confetti) -> Yes! button.
+   Pindutin ang text para laktawan at ipakita agad ang lahat. */
+function startStory() {
+    var root = document.documentElement;
+    try {
+        var story = document.getElementById('story');
+        var card = document.getElementById('proposalPage');
+        var btn = document.getElementById('yesBtn');
+        var hint = card.querySelector('.tap-hint');
+        var h1 = story.querySelector('h1');
+        var ask = story.querySelector('.ask');
+        var hl = story.querySelector('.hl');
+
+        // Ipakita ang mga nakatagong elemento (hawak sila ng animation na opacity 0 hanggang sa oras nila)
+        var hidden = story.querySelectorAll('h1, .msg, .ask');
+        for (var i = 0; i < hidden.length; i++) hidden[i].style.visibility = 'visible';
+
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        function delay(el, s) {
+            el.style.webkitAnimationDelay = el.style.animationDelay = s.toFixed(2) + 's';
+        }
+
+        var t = 0.6;
+        h1.className += ' pop';
+        delay(h1, t);
+        t += 0.7;
+
+        // Salita-por-salita
+        var lines = story.querySelectorAll('.msg');
+        for (var l = 0; l < lines.length; l++) {
+            var p = lines[l];
+            var words = p.textContent.replace(/\s+/g, ' ').trim().split(' ');
+            p.innerHTML = '';
+            for (var w = 0; w < words.length; w++) {
+                var span = document.createElement('span');
+                span.className = 'w';
+                span.textContent = words[w];
+                delay(span, t + w * 0.07);
+                p.appendChild(span);
+                p.appendChild(document.createTextNode(' '));
+            }
+            t += words.length * 0.07 + 0.35;
+        }
+
+        // Ang naka-highlight na salita
+        ask.className += ' pop';
+        delay(ask, t);
+        hl.style.webkitAnimationDelay = hl.style.animationDelay = (t + 0.45).toFixed(2) + 's,' + (t + 1.4).toFixed(2) + 's';
+        hl.style.setProperty('--hd', (t + 1.4).toFixed(2) + 's');
+        var burstTimer = setTimeout(function () { confettiFromEl(hl, 22); }, (t + 0.5) * 1000);
+        t += 1.2;
+
+        // Button at hint
+        btn.style.webkitAnimationDelay = btn.style.animationDelay = t.toFixed(2) + 's,' + (t + 1).toFixed(2) + 's';
+        hint.className += ' fade-in';
+        delay(hint, t + 0.8);
+
+        // Laktawan kapag pinindot ang text
+        story.addEventListener('click', function () {
+            if (card.className.indexOf('skip') === -1) {
+                card.className += ' skip';
+                clearTimeout(burstTimer);
+                confettiFromEl(hl, 22);
+            }
+        });
+    } catch (e) {
+        root.className = ''; // kung may problema, ipakita ang lahat nang walang animation
+    }
+}

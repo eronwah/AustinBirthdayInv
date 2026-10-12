@@ -872,3 +872,119 @@ body.party-bg {
 @media (max-height: 700px) {
     :root { --img-w: min(170px, 50vw); }
 }
+
+
+/* =========================================
+   Ninong / Ninang: pasunod-sunod na paglabas ng text
+   ========================================= */
+/* Nakatago lang hanggang tumakbo ang script (para walang flash) */
+.js .story h1,
+.js .story .msg,
+.js .story .ask {
+    visibility: hidden;
+}
+
+.story .w {
+    display: inline-block;
+    -webkit-animation: wordIn 0.45s cubic-bezier(0.3, 1.4, 0.5, 1) both;
+    animation: wordIn 0.45s cubic-bezier(0.3, 1.4, 0.5, 1) both;
+}
+@-webkit-keyframes wordIn {
+    0%   { opacity: 0; -webkit-transform: translate3d(0, 14px, 0) scale(0.85); }
+    100% { opacity: 1; -webkit-transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes wordIn {
+    0%   { opacity: 0; transform: translate3d(0, 14px, 0) scale(0.85); }
+    100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+.ask {
+    font-size: 1.9rem;
+    margin: 4px 0 20px;
+}
+
+/* Naka-highlight na Ninong?/Ninang? */
+.ask .hl {
+    display: inline-block;
+    position: relative;
+    padding: 4px 20px;
+    border-radius: 14px;
+    color: #E51B24;
+    background-image: -webkit-linear-gradient(#F9A72B, #F9A72B);
+    background-image: linear-gradient(#F9A72B, #F9A72B);
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: 100% 100%;
+    box-shadow: 0 4px 0 #d98a12;
+    -webkit-animation: markerSweep 0.6s ease-out both, hlPulse 1.8s ease-in-out infinite;
+    animation: markerSweep 0.6s ease-out both, hlPulse 1.8s ease-in-out infinite;
+}
+.ask .hl::after {
+    content: '\2728';
+    position: absolute;
+    right: -14px;
+    top: -16px;
+    font-size: 1.2rem;
+    opacity: 0;
+    -webkit-animation: twinkle 1.4s ease-in-out var(--hd, 3s) infinite both;
+    animation: twinkle 1.4s ease-in-out var(--hd, 3s) infinite both;
+}
+@-webkit-keyframes markerSweep {
+    0%   { background-size: 0% 100%; box-shadow: 0 0 0 #d98a12; }
+    100% { background-size: 100% 100%; box-shadow: 0 4px 0 #d98a12; }
+}
+@keyframes markerSweep {
+    0%   { background-size: 0% 100%; box-shadow: 0 0 0 #d98a12; }
+    100% { background-size: 100% 100%; box-shadow: 0 4px 0 #d98a12; }
+}
+@-webkit-keyframes hlPulse {
+    0%, 100% { -webkit-transform: scale(1); }
+    50%      { -webkit-transform: scale(1.06); }
+}
+@keyframes hlPulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.06); }
+}
+@-webkit-keyframes twinkle {
+    0%, 100% { opacity: 0; -webkit-transform: scale(0.5) rotate(0deg); }
+    50%      { opacity: 1; -webkit-transform: scale(1.1) rotate(20deg); }
+}
+@keyframes twinkle {
+    0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+    50%      { opacity: 1; transform: scale(1.1) rotate(20deg); }
+}
+
+.tap-hint.fade-in {
+    -webkit-animation: fadeIn 0.6s ease-out both;
+    animation: fadeIn 0.6s ease-out both;
+}
+@-webkit-keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+
+/* Laktawan: ipakita agad ang lahat */
+.skip .story h1,
+.skip .story .ask,
+.skip .story .w,
+.skip .tap-hint {
+    -webkit-animation: none;
+    animation: none;
+    opacity: 1;
+}
+.skip .ask .hl {
+    -webkit-animation: hlPulse 1.8s ease-in-out infinite;
+    animation: hlPulse 1.8s ease-in-out infinite;
+}
+.skip .ask .hl::after {
+    -webkit-animation-delay: 0s;
+    animation-delay: 0s;
+}
+.skip .btn-pulse {
+    -webkit-animation: btnPulse 1.6s ease-in-out infinite;
+    animation: btnPulse 1.6s ease-in-out infinite;
+    opacity: 1;
+}
+
+@media (max-width: 350px) {
+    .ask { font-size: 1.55rem; margin-bottom: 14px; }
+    .ask .hl { padding: 3px 14px; }
+}

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A special question from Austin</title>
+
+    <!-- Link preview (Messenger/Facebook). Palitan ang URL kapag lumipat sa Cloudflare -->
+    <meta name="description" content="Austin has a special question for you. Tap to open!">
+    <link rel="canonical" href="https://eronwah.github.io/AustinBirthdayInv/ninang.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Austin's 1st Birthday">
+    <meta property="og:title" content="A special question from Austin">
+    <meta property="og:description" content="Austin has a special question for you. Tap to open!">
+    <meta property="og:url" content="https://eronwah.github.io/AustinBirthdayInv/ninang.html">
+    <meta property="og:image" content="https://eronwah.github.io/AustinBirthdayInv/assets/preview-ninong-2.jpg">
+    <meta property="og:image:secure_url" content="https://eronwah.github.io/AustinBirthdayInv/assets/preview-ninong-2.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Envelope: A special question from Austin">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="A special question from Austin">
+    <meta name="twitter:image" content="https://eronwah.github.io/AustinBirthdayInv/assets/preview-ninong-2.jpg">
+    <link rel="stylesheet" href="style.css">
+    <script>document.documentElement.className = 'js';</script>
+</head>
+<body class="party-bg">
+
+    <div class="bunting" aria-hidden="true"></div>
+
+    <!-- NINANG INVITATION -->
+    <div id="proposalPage" class="card-container active">
+        <img src="assets/main-image.png" alt="Austin" class="jollibee-img" id="mainImg">
+
+        <div id="story" class="story">
+            <h1>Hello I am Austin!</h1>
+            <p class="msg">My life would be enriched by your presence and guidance.</p>
+            <p class="msg">Can you join us in celebrating this beautiful moment of faith as my</p>
+            <h2 class="ask"><span class="hl">Ninang?</span></h2>
+        </div>
+
+        <button id="yesBtn" class="btn-yes btn-pulse">Yes!</button>
+        <p class="tap-hint">Tap Austin for a surprise! &#127881;</p>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Kung hindi ma-load ang image, tanggalin ito at alisin ang malaking puwang sa itaas
+        document.getElementById('mainImg').addEventListener('error', function () {
+            this.style.display = 'none';
+            document.getElementById('proposalPage').classList.add('no-image');
+        });
+
+        // Bawat pindot sa larawan ni Austin = confetti
+        document.getElementById('mainImg').addEventListener('click', function () {
+            confettiBurst(20);
+        });
+
+        startBalloons();
+        startStory();
+
+        // Yes! -> confetti mula sa button, tapos punta sa details page (tandaan kung saan galing)
+        document.getElementById('yesBtn').addEventListener('click', function () {
+            confettiFromEl(this, 28);
+            setTimeout(function () { window.location.href = 'details.html?from=ninang'; }, 950);
+        });
+    </script>
+
+</body>
+</html>
