@@ -1,7 +1,8 @@
 /* RSVP pop-up para sa details page.
-   DEMO MODE: wala pang nakakabit na Google Sheet. Kapag may RSVP_URL na (Apps Script), saka ito magpapadala ng datos. */
+   Nagse-save sa Google Sheet "Guest List" gamit ang Apps Script (Web app URL sa RSVP_URL).
+   May ID bawat device: kapag nagbago ang sagot o pangalan, ia-update ang parehong row at hindi magdadagdag ng bago. */
 (function () {
-    var RSVP_URL = '';   // <- ilalagay dito ang Apps Script link sa susunod na hakbang
+    var RSVP_URL = 'https://script.google.com/macros/s/AKfycby8xHofspSymk2mwuUxdeiD4IH5J5OW2ZIRvShS-OurMuk-Tcu_kb79utoKdOwSG8s/exec';   // Web app URL ng Apps Script (kapag nagpalit ng deployment, palitan dito)
 
     var $ = function (id) { return document.getElementById(id); };
     var modal = $('rsvpModal');
@@ -37,6 +38,33 @@
     function save(data) {
         try { localStorage.setItem('austin_rsvp', JSON.stringify(data)); } catch (e) {}
     }
+    // ID ng device: ginagawa bago mag-send, kaya kung mag-retry dahil walang signal, pareho pa rin ang ID (walang doble)
+    var memId = '';
+    function makeId() {
+        var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';   // walang 0/O at 1/I para madaling basahin
+        var out = '', i;
+        try {
+            var arr = new Uint8Array(6);
+            (window.crypto || window.msCrypto).getRandomValues(arr);
+            for (i = 0; i < arr.length; i++) { out += chars.charAt(arr[i] % chars.length); }
+        } catch (e) {
+            out = '';
+            for (i = 0; i < 6; i++) { out += chars.charAt(Math.floor(Math.random() * chars.length)); }
+        }
+        return out;
+    }
+    function getId() {
+        if (memId) return memId;
+        var s = saved();
+        if (s && s.id) { memId = s.id; return memId; }
+        try { memId = localStorage.getItem('austin_rsvp_id') || ''; } catch (e) {}
+        if (!memId) {
+            memId = makeId();
+            try { localStorage.setItem('austin_rsvp_id', memId); } catch (e) {}
+        }
+        return memId;
+    }
+
     function refreshOpenBtn() {
         openBtn.innerHTML = saved() ? '&#10003; RSVP sent (tap to view)' : '&#128140; RSVP';
     }
@@ -69,12 +97,12 @@
         }
     }
 
-    function showThanks(data) {
+    function showThanks(data, updated) {
         var yes = data.attending === 'yes';
         $('thanksTitle').textContent = yes ? ('Yay, ' + data.name + '! \uD83C\uDF89') : ('We\'ll miss you, ' + data.name + '! \uD83D\uDC9B');
-        $('thanksText').textContent = yes
-            ? 'We can\'t wait to celebrate with you.'
-            : 'Thank you for letting us know.';
+        $('thanksText').textContent = updated
+            ? 'Your RSVP has been updated.'
+            : (yes ? 'We can\'t wait to celebrate with you.' : 'Thank you for letting us know.');
         $('thanksRecap').className = yes ? 'rsvp-recap' : 'rsvp-recap hidden';
         $('thanksParty').textContent = 'Party of ' + data.guests;
         formView.className = 'hidden';
@@ -92,21 +120,27 @@
         document.body.style.overflow = '';
     }
 
-    // Padala (demo kung walang RSVP_URL)
+    // Padala sa Apps Script. Success lang kapag kinumpirma ng Sheet na na-save ito.
     function send(payload, done, fail) {
         if (!RSVP_URL) {
-            if (window.console) { console.log('RSVP (demo, hindi pa naka-save):', payload); }
-            setTimeout(done, 700);
+            if (window.console) { console.warn('RSVP_URL is empty: walang kinokonektang Sheet.'); }
+            fail('not-configured');
             return;
         }
         try {
             var xhr = new XMLHttpRequest();
             xhr.open('POST', RSVP_URL, true);
             xhr.setRequestHeader('Content-Type', 'text/plain;charset=utf-8');
-            xhr.onload = function () { (xhr.status >= 200 && xhr.status < 400) ? done() : fail(); };
-            xhr.onerror = fail;
+            xhr.timeout = 20000;
+            xhr.onload = function () {
+                var r = null;
+                try { r = JSON.parse(xhr.responseText); } catch (e) {}
+                if (xhr.status >= 200 && xhr.status < 400 && r && r.ok === true) { done(r); } else { fail('server'); }
+            };
+            xhr.onerror = function () { fail('network'); };
+            xhr.ontimeout = function () { fail('timeout'); };
             xhr.send(JSON.stringify(payload));
-        } catch (e) { fail(); }
+        } catch (e) { fail('error'); }
     }
 
     // ---- Mga event ----
@@ -135,6 +169,7 @@
         errorEl.textContent = '';
 
         var payload = {
+            id: getId(),
             name: name,
             attending: attending,
             guests: attending === 'yes' ? guests : 0,
@@ -145,17 +180,21 @@
 
         sendBtn.disabled = true;
         sendBtn.textContent = 'Sending...';
-        send(payload, function () {
+        send(payload, function (r) {
             sendBtn.disabled = false;
             sendBtn.textContent = 'Send RSVP';
+            if (r && r.id) { payload.id = r.id; memId = r.id; }   // ID ng row sa Sheet (maaaring iba kung nahanap sa pangalan)
             save(payload);
+            try { localStorage.setItem('austin_rsvp_id', payload.id); } catch (e) {}
             refreshOpenBtn();
-            showThanks(payload);
+            showThanks(payload, r && r.updated);
             if (payload.attending === 'yes' && typeof confettiFromEl === 'function') { confettiFromEl(sendBtn, 28); }
-        }, function () {
+        }, function (why) {
             sendBtn.disabled = false;
             sendBtn.textContent = 'Send RSVP';
-            errorEl.textContent = 'Oops, it didn\'t send. Please try again.';
+            errorEl.textContent = (why === 'not-configured')
+                ? 'RSVP isn\'t available yet. Please try again later.'
+                : 'Oops, it didn\'t send. Please check your connection and try again.';
         });
     });
 
