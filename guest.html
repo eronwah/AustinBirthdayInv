@@ -41,11 +41,9 @@
         <h2 class="guest-name pop d2"><span>Austin Dagsaan Libunao</span></h2>
         <h1 class="guest-bday pop d3">1st Birthday!</h1>
 
-        <!-- Mga larawan: nasa loob lang ng card, hindi nagpapatong -->
+        <!-- Larawan ni Austin sa sunburst stage -->
         <div class="trio">
-            <div class="trio-side pop d4"><img src="assets/jollibee.png" alt="Jollibee" id="imgJollibee"></div>
-            <div class="trio-mid pop d5"><img src="assets/main-image.png" alt="Austin" id="imgAustin"></div>
-            <div class="trio-side pop d6"><img src="assets/hetty.png" alt="Hetty" id="imgHetty"></div>
+            <div class="trio-mid pop d4"><img src="assets/main-image.png" alt="Austin" id="imgAustin"></div>
         </div>
 
         <p class="guest-q pop d7">Are you in for the party?</p>
@@ -55,10 +53,8 @@
     <script src="script.js"></script>
     <script>
         // Itago (pero panatilihin ang puwesto) ng larawang hindi ma-load
-        ['imgJollibee', 'imgAustin', 'imgHetty'].forEach(function (id) {
-            document.getElementById(id).addEventListener('error', function () {
-                this.style.visibility = 'hidden';
-            });
+        document.getElementById('imgAustin').addEventListener('error', function () {
+            this.style.visibility = 'hidden';
         });
 
         startBalloons();

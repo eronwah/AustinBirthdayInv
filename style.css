@@ -1218,3 +1218,63 @@ body.party-bg {
 @media (prefers-reduced-motion: reduce) {
     .btn-rsvp, .rsvp-overlay, .rsvp-sheet { -webkit-animation: none; animation: none; }
 }
+
+
+/* Walang zoom kapag double-tap; gumagana pa rin ang pinch (dalawang daliri) */
+html, body, * {
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+}
+
+/* Guest page: si Austin lang sa gitna ng stage */
+.trio {
+    -webkit-justify-content: center;
+    justify-content: center;
+}
+.trio-mid {
+    -webkit-flex: 0 0 76%;
+    flex: 0 0 76%;
+    padding: 0 2px;
+}
+
+/* Gabay sa pag-pop: maliit na tip na sumasama sa lobo */
+.fly-balloon-sway {
+    position: relative;
+}
+.pop-tip {
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    margin-bottom: 7px;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    white-space: nowrap;
+    background: #ffffff;
+    color: #E51B24;
+    border: 2px solid #F9A72B;
+    border-radius: 50px;
+    padding: 3px 10px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 1.3;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+    pointer-events: none;
+}
+.pop-tip::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    margin-left: -5px;
+    border: 5px solid transparent;
+    border-top-color: #F9A72B;
+}
+.tips-off .pop-tip {
+    display: none;
+}
+
+/* Maiikling screen: mas maliit si Austin sa guest page para kasya sa isang screen */
+@media (max-height: 700px) {
+    .trio-mid { -webkit-flex: 0 0 58%; flex: 0 0 58%; }
+}

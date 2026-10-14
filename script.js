@@ -95,6 +95,15 @@ function startBalloons() {
     var colors = ['#E51B24', '#F9A72B', '#ffffff', '#ffd54f'];
     var active = 0;
 
+    // Gabay: ang unang 2 lobo ay may maliit na "Tap to pop me!" na sumasama sa lobo (hindi nakatigil, kaya hindi sagabal).
+    // Isang beses lang bawat session, at titigil kapag may nakapag-pop na.
+    var tipsLeft = 2;
+    var popped = false;
+    try {
+        if (sessionStorage.getItem('balloonTip')) { tipsLeft = 0; } else { sessionStorage.setItem('balloonTip', '1'); }
+        if (sessionStorage.getItem('balloonPopped')) { popped = true; }
+    } catch (e) {}
+
     var SVG = '<svg viewBox="0 0 40 80" aria-hidden="true">'
         + '<path class="hit" d="M20 2 C31 2 38 11 38 22 C38 34 29 43 20 46 C11 43 2 34 2 22 C2 11 9 2 20 2 Z" fill="currentColor" stroke="rgba(0,0,0,0.22)" stroke-width="1.5"/>'
         + '<path d="M20 46 C29 43 38 34 38 22 C37 33 29 40 20 42 Z" fill="#000" opacity="0.12"/>'
@@ -107,6 +116,9 @@ function startBalloons() {
         if (b._gone) return;
         b._gone = true;
         active--;
+        popped = true;
+        layer.className = 'tips-off';
+        try { sessionStorage.setItem('balloonPopped', '1'); } catch (e) {}
         var r = b.getBoundingClientRect();
         var cx = r.left + r.width / 2;
         var cy = r.top + r.width * 0.55;
@@ -146,7 +158,15 @@ function startBalloons() {
 
         var b = document.createElement('div');
         b.className = 'fly-balloon';
-        b.style.left = Math.floor(Math.random() * (w - size)) + 'px';
+        var withTip = !popped && tipsLeft > 0;
+        if (withTip) { tipsLeft--; }
+        var left = Math.floor(Math.random() * (w - size));
+        if (withTip) {
+            // ilayo sa gilid para hindi maputol ang tip
+            var center = 70 + Math.random() * Math.max(0, w - 140);
+            left = Math.round(center - size / 2);
+        }
+        b.style.left = left + 'px';
         b.style.width = size + 'px';
         b.style.setProperty('--rise', '-' + (h + 180) + 'px'); // negatibo = pataas
         b.style.webkitAnimationDuration = b.style.animationDuration = dur + 's';
@@ -155,6 +175,12 @@ function startBalloons() {
         sway.className = 'fly-balloon-sway';
         sway.style.color = color;
         sway.innerHTML = SVG;
+        if (withTip) {
+            var tip = document.createElement('span');
+            tip.className = 'pop-tip';
+            tip.textContent = 'Tap to pop me! \uD83D\uDC47';
+            sway.appendChild(tip);
+        }
         b.appendChild(sway);
 
         var hits = sway.querySelectorAll('.hit');
