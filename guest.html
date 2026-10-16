@@ -7,21 +7,21 @@
 
     <!-- Link preview (Messenger/Facebook). Palitan ang URL kapag lumipat sa Cloudflare -->
     <meta name="description" content="Tap to see the details and join the party!">
-    <link rel="canonical" href="https://eronwah.github.io/AustinBirthdayInv/guest.html">
+    <link rel="canonical" href="https://austinbday.invitationers.workers.dev/guest">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Austin's 1st Birthday">
     <meta property="og:title" content="You're invited to Austin's 1st Birthday!">
     <meta property="og:description" content="Tap to see the details and join the party!">
-    <meta property="og:url" content="https://eronwah.github.io/AustinBirthdayInv/guest.html">
-    <meta property="og:image" content="https://eronwah.github.io/AustinBirthdayInv/assets/preview-guest.jpg">
-    <meta property="og:image:secure_url" content="https://eronwah.github.io/AustinBirthdayInv/assets/preview-guest.jpg">
+    <meta property="og:url" content="https://austinbday.invitationers.workers.dev/guest">
+    <meta property="og:image" content="https://austinbday.invitationers.workers.dev/assets/preview-guest.jpg">
+    <meta property="og:image:secure_url" content="https://austinbday.invitationers.workers.dev/assets/preview-guest.jpg">
     <meta property="og:image:type" content="image/jpeg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="Envelope: You're invited to Austin's 1st Birthday">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="You're invited to Austin's 1st Birthday!">
-    <meta name="twitter:image" content="https://eronwah.github.io/AustinBirthdayInv/assets/preview-guest.jpg">
+    <meta name="twitter:image" content="https://austinbday.invitationers.workers.dev/assets/preview-guest.jpg">
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="party-bg">
@@ -57,11 +57,42 @@
             this.style.visibility = 'hidden';
         });
 
+        // Awtomatikong ipantay sa gitna ang mismong laman ng larawan (kahit hindi pantay ang transparent na espasyo sa PNG)
+        function centerPhoto(img) {
+            try {
+                var w = img.naturalWidth, h = img.naturalHeight;
+                if (!w || !h) return;
+                var s = Math.min(1, 200 / w);
+                var cw = Math.max(1, Math.round(w * s)), ch = Math.max(1, Math.round(h * s));
+                var cv = document.createElement('canvas');
+                cv.width = cw; cv.height = ch;
+                var cx = cv.getContext('2d');
+                cx.drawImage(img, 0, 0, cw, ch);
+                var d = cx.getImageData(0, 0, cw, ch).data;
+                var min = cw, max = -1;
+                for (var y = 0; y < ch; y++) {
+                    for (var x = 0; x < cw; x++) {
+                        if (d[(y * cw + x) * 4 + 3] > 40) {
+                            if (x < min) min = x;
+                            if (x > max) max = x;
+                        }
+                    }
+                }
+                if (max < 0) return;
+                var offset = (cw / 2 - (min + max + 1) / 2) / cw;   // bahagi ng lapad
+                offset = Math.max(-0.2, Math.min(0.2, offset));
+                img.style.transform = 'translateX(' + (offset * 100).toFixed(2) + '%)';
+            } catch (e) { /* kung hindi puwede, iwan sa dati */ }
+        }
+        var austin = document.getElementById('imgAustin');
+        if (austin.complete) { centerPhoto(austin); }
+        austin.addEventListener('load', function () { centerPhoto(austin); });
+
         startBalloons();
 
         document.getElementById('goBtn').addEventListener('click', function () {
             confettiFromEl(this, 28); // sumasabog mula mismo sa button
-            setTimeout(function () { window.location.href = 'details.html?from=guest'; }, 950);
+            setTimeout(function () { window.location.href = 'details?from=guest'; }, 950);
         });
     </script>
 

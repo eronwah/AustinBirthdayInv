@@ -185,7 +185,19 @@ function startBalloons() {
 
         var hits = sway.querySelectorAll('.hit');
         for (var i = 0; i < hits.length; i++) {
-            hits[i].addEventListener('click', function () { pop(b, color); });
+            hits[i].addEventListener('click', function (ev) {
+                // Kung may button/link sa ilalim ng daliri, ang button ang uunahin (hindi sagabal ang lobo sa pangunahing laman)
+                if (document.elementsFromPoint) {
+                    var under = document.elementsFromPoint(ev.clientX, ev.clientY);
+                    for (var u = 0; u < under.length; u++) {
+                        var el = under[u];
+                        if (layer.contains(el)) { continue; }
+                        var target = el.closest ? el.closest('button, a, [role="button"]') : null;
+                        if (target) { target.click(); return; }
+                    }
+                }
+                pop(b, color);
+            });
         }
 
         layer.appendChild(b);
